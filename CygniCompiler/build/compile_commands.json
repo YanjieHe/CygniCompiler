@@ -1,0 +1,87 @@
+[
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/ConstantCollector.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ConstantCollector.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ConstantCollector.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Exception.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Expression.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Expression.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Expression.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/ExpressionViewer.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ExpressionViewer.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ExpressionViewer.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Lexer.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Lexer.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Lexer.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Module.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Module.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Module.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Parser.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Parser.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Parser.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/SourceReader.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SourceReader.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SourceReader.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/TestLexer.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestLexer.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestLexer.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/TestParser.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestParser.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestParser.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/TestType.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestType.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestType.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/TestTypeChecker.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestTypeChecker.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TestTypeChecker.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Token.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Token.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Token.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/Type.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Type.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Type.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/TypeChecker.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TypeChecker.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/TypeChecker.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/bin/c++     -std=c++17 -Wall -Wextra   -o CMakeFiles/CygniCompiler.dir/main.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/main.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/main.cpp"
+}
+]

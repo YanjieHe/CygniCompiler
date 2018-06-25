@@ -1,0 +1,4 @@
+fun Main(args: Array[String]): Int {
+    Console.PutStrLn("Hello World!")
+    return 0
+}

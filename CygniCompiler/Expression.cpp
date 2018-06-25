@@ -1,0 +1,386 @@
+#include "Expression.hpp"
+using std::make_shared;
+Expression::Expression(int32_t line, int32_t column, ExpressionKind kind)
+	: line{line}
+	, column(column)
+	, kind{kind}
+{
+}
+ConstantExpression::ConstantExpression(int32_t line, int32_t column, any value)
+	: Expression(line, column, ExpressionKind::Constant)
+	, value{value}
+{
+}
+
+UnaryExpression::UnaryExpression(int32_t line, int32_t column,
+								 ExpressionKind kind, ExpPtr operand)
+	: Expression(line, column, kind)
+	, operand{operand}
+{
+}
+
+BinaryExpression::BinaryExpression(int32_t line, int32_t column,
+								   ExpressionKind kind, ExpPtr left,
+								   ExpPtr right)
+	: Expression(line, column, kind)
+	, left{left}
+	, right{right}
+{
+}
+
+AssignExpression::AssignExpression(int32_t line, int32_t column, wstring name,
+								   ExpPtr value)
+	: Expression(line, column, ExpressionKind::Assign)
+	, name{name}
+	, value{value}
+{
+}
+
+BlockExpression::BlockExpression(int32_t line, int32_t column,
+								 vector<ExpPtr> expressions)
+	: Expression(line, column, ExpressionKind::Block)
+	, expressions{expressions}
+{
+}
+
+IfThenExpression::IfThenExpression(int32_t line, int32_t column,
+								   ExpPtr condition, ExpPtr ifTrue)
+	: Expression(line, column, ExpressionKind::IfThen)
+	, condition{condition}
+	, ifTrue{ifTrue}
+{
+}
+
+IfThenElseExpression::IfThenElseExpression(int32_t line, int32_t column,
+										   ExpPtr condition, ExpPtr ifTrue,
+										   ExpPtr ifFalse)
+	: Expression(line, column, ExpressionKind::IfThenElse)
+	, condition{condition}
+	, ifTrue{ifTrue}
+	, ifFalse{ifFalse}
+{
+}
+
+DefVarExpression::DefVarExpression(int32_t line, int32_t column, wstring name,
+								   Type type, ExpPtr value)
+	: Expression(line, column, ExpressionKind::DefVar)
+	, name{name}
+	, value{value}
+{
+	this->type = type;
+}
+
+DefFunExpression::DefFunExpression(int32_t line, int32_t column, wstring name,
+								   vector<ParameterExpPtr> parameters,
+								   ExpPtr body, Type returnType)
+	: Expression(line, column, ExpressionKind::DefFun)
+	, name{name}
+	, parameters{parameters}
+	, body{body}
+	, returnType{returnType}
+{
+	vector<Type> types;
+	types.reserve(parameters.size());
+	for (ParameterExpPtr& p : parameters)
+	{
+		types.push_back(p->type);
+	}
+	types.push_back(returnType);
+	this->type = Type(L"Function", types);
+}
+ParameterExpression::ParameterExpression(int32_t line, int32_t column,
+										 wstring name, Type type)
+	: Expression(line, column, ExpressionKind::Parameter)
+	, name{name}
+{
+	this->type = type;
+}
+
+CallExpression::CallExpression(int32_t line, int32_t column, ExpPtr function,
+							   vector<ExpPtr> arguments)
+	: Expression(line, column, ExpressionKind::Call)
+	, function{function}
+	, arguments{arguments}
+{
+}
+
+VariableExpression::VariableExpression(int32_t line, int32_t column,
+									   wstring name)
+	: Expression(line, column, ExpressionKind::Variable)
+	, name{name}
+{
+}
+ReturnExpression::ReturnExpression(int32_t line, int32_t column, ExpPtr value)
+	: Expression(line, column, ExpressionKind::Return)
+	, value{value}
+{
+}
+WhileExpression::WhileExpression(int32_t line, int32_t column, ExpPtr condition,
+								 ExpPtr body)
+	: Expression(line, column, ExpressionKind::While)
+	, condition{condition}
+	, body{body}
+{
+}
+void ConstantExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void UnaryExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void BinaryExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void AssignExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void BlockExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void IfThenExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void IfThenElseExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void DefVarExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void DefFunExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void ParameterExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void CallExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void VariableExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void ReturnExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+void WhileExpression::Accept(Expression::Visitor* visitor)
+{
+	visitor->Visit(this);
+}
+UnaryExpPtr Ast::UnaryPlus(int32_t line, int32_t column, ExpPtr operand)
+{
+	return make_shared<UnaryExpression>(line, column, ExpressionKind::UnaryPlus,
+										operand);
+}
+UnaryExpPtr Ast::UnaryMinus(int32_t line, int32_t column, ExpPtr operand)
+{
+	return make_shared<UnaryExpression>(line, column,
+										ExpressionKind::UnaryMinus, operand);
+}
+UnaryExpPtr Ast::Not(int32_t line, int32_t column, ExpPtr operand)
+{
+	return make_shared<UnaryExpression>(line, column, ExpressionKind::Not,
+										operand);
+}
+BinaryExpPtr Ast::Add(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Add, e1,
+										 e2);
+}
+BinaryExpPtr Ast::Subtract(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Subtract,
+										 e1, e2);
+}
+BinaryExpPtr Ast::Multiply(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Multiply,
+										 e1, e2);
+}
+BinaryExpPtr Ast::Divide(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Divide,
+										 e1, e2);
+}
+BinaryExpPtr Ast::Modulo(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Modulo,
+										 e1, e2);
+}
+BinaryExpPtr Ast::GreaterThan(int32_t line, int32_t column, ExpPtr e1,
+							  ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column,
+										 ExpressionKind::GreaterThan, e1, e2);
+}
+BinaryExpPtr Ast::LessThan(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::LessThan,
+										 e1, e2);
+}
+BinaryExpPtr Ast::GreaterThanOrEqual(int32_t line, int32_t column, ExpPtr e1,
+									 ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(
+		line, column, ExpressionKind::GreaterThanOrEqual, e1, e2);
+}
+BinaryExpPtr Ast::LessThanOrEqual(int32_t line, int32_t column, ExpPtr e1,
+								  ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(
+		line, column, ExpressionKind::LessThanOrEqual, e1, e2);
+}
+BinaryExpPtr Ast::Equal(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Equal,
+										 e1, e2);
+}
+BinaryExpPtr Ast::NotEqual(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::NotEqual,
+										 e1, e2);
+}
+BinaryExpPtr Ast::And(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::And, e1,
+										 e2);
+}
+BinaryExpPtr Ast::Or(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2)
+{
+	return make_shared<BinaryExpression>(line, column, ExpressionKind::Or, e1,
+										 e2);
+}
+ConstantExpPtr Ast::Constant(int32_t line, int32_t column, std::any value)
+{
+	return make_shared<ConstantExpression>(line, column, value);
+}
+DefVarExpPtr Ast::DefineVariable(int32_t line, int32_t column, wstring name,
+								 Type type, ExpPtr value)
+{
+	return make_shared<DefVarExpression>(line, column, name, type, value);
+}
+DefFuncExpPtr Ast::DefineFunction(int32_t line, int32_t column, wstring name,
+								  vector<ParameterExpPtr> parameters,
+								  ExpPtr body, Type returnType)
+{
+	return make_shared<DefFunExpression>(line, column, name, parameters, body,
+										 returnType);
+}
+CallExpPtr Ast::Call(int32_t line, int32_t column, ExpPtr function,
+					 vector<ExpPtr> arguments)
+{
+	return make_shared<CallExpression>(line, column, function, arguments);
+}
+VariableExpPtr Ast::Variable(int32_t line, int32_t column, wstring name)
+{
+	return make_shared<VariableExpression>(line, column, name);
+}
+BlockExpPtr Ast::Block(int32_t line, int32_t column, vector<ExpPtr> expressions)
+{
+	return make_shared<BlockExpression>(line, column, expressions);
+}
+AssignExpPtr Ast::Assign(int32_t line, int32_t column, wstring name,
+						 ExpPtr value)
+{
+	return make_shared<AssignExpression>(line, column, name, value);
+}
+IfThenExpPtr Ast::IfThen(int32_t line, int32_t column, ExpPtr condition,
+						 ExpPtr ifTrue)
+{
+	return make_shared<IfThenExpression>(line, column, condition, ifTrue);
+}
+IfThenElseExpPtr Ast::IfThenElse(int32_t line, int32_t column, ExpPtr condition,
+								 ExpPtr ifTrue, ExpPtr ifFalse)
+{
+	return make_shared<IfThenElseExpression>(line, column, condition, ifTrue,
+											 ifFalse);
+}
+ParameterExpPtr Ast::Parameter(int32_t line, int32_t column, wstring name,
+							   Type type)
+{
+	return make_shared<ParameterExpression>(line, column, name, type);
+}
+ReturnExpPtr Ast::Return(int32_t line, int32_t column, ExpPtr value)
+{
+	return make_shared<ReturnExpression>(line, column, value);
+}
+WhileExpPtr Ast::While(int32_t line, int32_t column, ExpPtr condition,
+					   ExpPtr body)
+{
+	return make_shared<WhileExpression>(line, column, condition, body);
+}
+wstring ExpressionKindToString(ExpressionKind kind)
+{
+	switch (kind)
+	{
+	case ExpressionKind::Add:
+		return L"Add";
+	case ExpressionKind::Subtract:
+		return L"Subtract";
+	case ExpressionKind::Multiply:
+		return L"Multiply";
+	case ExpressionKind::Divide:
+		return L"Divide";
+	case ExpressionKind::Modulo:
+		return L"Modulo";
+	case ExpressionKind::GreaterThan:
+		return L"GreaterThan";
+	case ExpressionKind::LessThan:
+		return L"LessThan";
+	case ExpressionKind::GreaterThanOrEqual:
+		return L"GreaterThanOrEqual";
+	case ExpressionKind::LessThanOrEqual:
+		return L"LessThanOrEqual";
+	case ExpressionKind::Equal:
+		return L"Equal";
+	case ExpressionKind::NotEqual:
+		return L"NotEqual";
+	case ExpressionKind::Constant:
+		return L"Constant";
+	case ExpressionKind::UnaryPlus:
+		return L"UnaryPlus";
+	case ExpressionKind::UnaryMinus:
+		return L"UnaryMinus";
+	case ExpressionKind::And:
+		return L"And";
+	case ExpressionKind::Or:
+		return L"Or";
+	case ExpressionKind::Not:
+		return L"Not";
+	case ExpressionKind::DefVar:
+		return L"DefVar";
+	case ExpressionKind::DefFun:
+		return L"DefFun";
+	case ExpressionKind::IfThen:
+		return L"IfThen";
+	case ExpressionKind::IfThenElse:
+		return L"IfThenElse";
+	case ExpressionKind::Parameter:
+		return L"Parameter";
+	case ExpressionKind::Variable:
+		return L"Variable";
+	case ExpressionKind::Call:
+		return L"Call";
+	case ExpressionKind::Block:
+		return L"Block";
+	case ExpressionKind::Assign:
+		return L"Assign";
+	case ExpressionKind::Return:
+		return L"Return";
+	case ExpressionKind::While:
+		return L"While";
+	default:
+		throw wstring(L"error");
+	}
+}
