@@ -1,11 +1,16 @@
-fun Factorial(n: Long): Long
+namespace Mathematics.FactorialCalculation
+
+public module Program
 {
-    if n == 0L
+    public fun Factorial(n: Long): Long
     {
-        return 1L
-    }
-    else
-    {
-        return n * Factorial(n - 1L)
+        if n == 0L
+        {
+            return 1L
+        }
+        else
+        {
+            return n * Factorial(n - 1L)
+        }
     }
 }

@@ -63,7 +63,11 @@ enum class Tag
 	Class,
 	Public,
 	Private,
-	Protected
+	Protected,
+	Internal,
+
+	Module,
+	Namespace
 };
 
 class Token
@@ -80,11 +84,24 @@ public:
 	static Token FromOperator(int32_t line, int32_t column, wstring text);
 };
 bool operator==(const Token& x, const Token& y);
-static unordered_map<wstring, Tag> keywords = {
-	{L"true", Tag::True},   {L"false", Tag::False},  {L"var", Tag::DefVar},
-	{L"fun", Tag::DefFun},  {L"and", Tag::And},		 {L"or", Tag::Or},
-	{L"not", Tag::Not},		{L"if", Tag::If},		 {L"else", Tag::Else},
-	{L"while", Tag::While}, {L"return", Tag::Return}};
+static unordered_map<wstring, Tag> keywords = {{L"true", Tag::True},
+											   {L"false", Tag::False},
+											   {L"var", Tag::DefVar},
+											   {L"fun", Tag::DefFun},
+											   {L"and", Tag::And},
+											   {L"or", Tag::Or},
+											   {L"not", Tag::Not},
+											   {L"if", Tag::If},
+											   {L"else", Tag::Else},
+											   {L"while", Tag::While},
+											   {L"return", Tag::Return},
+											   {L"class", Tag::Class},
+											   {L"public", Tag::Public},
+											   {L"private", Tag::Private},
+											   {L"protected", Tag::Protected},
+											   {L"internal", Tag::Internal},
+											   {L"module", Tag::Module},
+											   {L"namespace", Tag::Namespace}};
 
 static unordered_map<wstring, Tag> operators = {
 	{L"+", Tag::Add},

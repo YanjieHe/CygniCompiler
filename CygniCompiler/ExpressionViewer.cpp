@@ -6,6 +6,69 @@ using std::wcout;
 ExpressionViewer::ExpressionViewer()
 {
 }
+void ExpressionViewer::ViewNamespace(shared_ptr<Namespace> nsPtr)
+{
+	for (auto& pair : nsPtr->modules)
+	{
+		auto& moduleInfo = pair.second;
+		for (auto& field : moduleInfo.fields)
+		{
+			wcout << L"(var ";
+			wcout << field.name << L" ";
+			field.value->Accept(this);
+			wcout << L")";
+		}
+		for (auto& p : moduleInfo.functions)
+		{
+			auto& function = p.second;
+			wcout << L"(fun ";
+			wcout << function.name << L" ";
+			wcout << L"(";
+			for (auto& parameter : function.parameters)
+			{
+				wcout << parameter.name << L" ";
+				wcout << TypeToString(parameter.type) << L" ";
+			}
+			wcout << L")" << endl;
+			for (auto& variable : function.variables)
+			{
+				wcout << L"(var ";
+				wcout << variable.name << L" ";
+				variable.value->Accept(this);
+				wcout << L")";
+			}
+			for (auto& e : function.expressions)
+			{
+				e->Accept(this);
+			}
+			wcout << L")" << endl;
+		}
+	}
+	for (auto& pair : nsPtr->classes)
+	{
+		auto& classInfo = pair.second;
+		for (auto& field : classInfo.fields)
+		{
+			wcout << L"(var ";
+			wcout << field.name << L" ";
+			field.value->Accept(this);
+			wcout << L")";
+		}
+		for (auto& p : classInfo.functions)
+		{
+			auto& function = p.second;
+			for (auto& e : function.expressions)
+			{
+				e->Accept(this);
+			}
+		}
+	}
+	for (auto& pair : nsPtr->subNamespaces)
+	{
+		auto& subNsPtr = pair.second;
+		ViewNamespace(subNsPtr);
+	}
+}
 void ExpressionViewer::Visit(ConstantExpression* node)
 {
 	wcout << endl << L"(Constant ";
@@ -104,33 +167,33 @@ void ExpressionViewer::Visit(IfThenElseExpression* node)
 	node->ifFalse->Accept(this);
 	wcout << L")";
 }
-void ExpressionViewer::Visit(DefVarExpression* node)
-{
-	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
-	wcout << TypeToString(node->type) << L" ";
-	wcout << node->name << L" ";
-	node->value->Accept(this);
-	wcout << L")";
-}
-void ExpressionViewer::Visit(DefFunExpression* node)
-{
-	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
-	wcout << TypeToString(node->type) << L" ";
-	wcout << node->name << L" ";
-	for (auto& p : node->parameters)
-	{
-		p->Accept(this);
-		wcout << L" ";
-	}
-	node->body->Accept(this);
-	wcout << L")";
-}
-void ExpressionViewer::Visit(ParameterExpression* node)
-{
-	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
-	wcout << TypeToString(node->type) << L" ";
-	wcout << node->name << L")";
-}
+// void ExpressionViewer::Visit(DefVarExpression* node)
+// {
+// 	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
+// 	wcout << TypeToString(node->type) << L" ";
+// 	wcout << node->name << L" ";
+// 	node->value->Accept(this);
+// 	wcout << L")";
+// }
+// void ExpressionViewer::Visit(DefFunExpression* node)
+// {
+// 	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
+// 	wcout << TypeToString(node->type) << L" ";
+// 	wcout << node->name << L" ";
+// 	for (auto& p : node->parameters)
+// 	{
+// 		p->Accept(this);
+// 		wcout << L" ";
+// 	}
+// 	node->body->Accept(this);
+// 	wcout << L")";
+// }
+// void ExpressionViewer::Visit(ParameterExpression* node)
+// {
+// 	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
+// 	wcout << TypeToString(node->type) << L" ";
+// 	wcout << node->name << L")";
+// }
 void ExpressionViewer::Visit(CallExpression* node)
 {
 	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
@@ -165,4 +228,38 @@ void ExpressionViewer::Visit(WhileExpression* node)
 	wcout << L" ";
 	node->body->Accept(this);
 	wcout << L")";
+}
+// void ExpressionViewer::Visit(ModuleExpression* node)
+// {
+// 	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
+// 	wcout << node->name << L" ";
+// 	for (auto& var : node->variables)
+// 	{
+// 		var->Accept(this);
+// 	}
+// 	for (auto& f : node->functions)
+// 	{
+// 		f->Accept(this);
+// 	}
+// 	wcout << L")";
+// }
+// void ExpressionViewer::Visit(ClassExpression* node)
+// {
+// 	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
+// 	wcout << node->name << L" ";
+// 	for (auto& field : node->fields)
+// 	{
+// 		field->Accept(this);
+// 	}
+// 	for (auto& method : node->methods)
+// 	{
+// 		method->Accept(this);
+// 	}
+// }
+void ExpressionViewer::Visit(DotExpression* node)
+{
+	wcout << endl << L"(" << ExpressionKindToString(node->kind) << L" ";
+	node->object->Accept(this);
+	wcout << L" ";
+	wcout << node->name << L")";
 }

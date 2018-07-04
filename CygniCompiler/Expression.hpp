@@ -18,13 +18,16 @@ class AssignExpression;
 class BlockExpression;
 class IfThenExpression;
 class IfThenElseExpression;
-class DefVarExpression;
-class DefFunExpression;
-class ParameterExpression;
+// class DefVarExpression;
+// class DefFunExpression;
+// class ParameterExpression;
 class CallExpression;
 class VariableExpression;
 class ReturnExpression;
 class WhileExpression;
+// class ModuleExpression;
+// class ClassExpression;
+class DotExpression;
 
 using ExpPtr = shared_ptr<Expression>;
 using ConstantExpPtr = shared_ptr<ConstantExpression>;
@@ -34,13 +37,16 @@ using AssignExpPtr = shared_ptr<AssignExpression>;
 using BlockExpPtr = shared_ptr<BlockExpression>;
 using IfThenExpPtr = shared_ptr<IfThenExpression>;
 using IfThenElseExpPtr = shared_ptr<IfThenElseExpression>;
-using DefVarExpPtr = shared_ptr<DefVarExpression>;
-using DefFuncExpPtr = shared_ptr<DefFunExpression>;
-using ParameterExpPtr = shared_ptr<ParameterExpression>;
+// using DefVarExpPtr = shared_ptr<DefVarExpression>;
+// using DefFunExpPtr = shared_ptr<DefFunExpression>;
+// using ParameterExpPtr = shared_ptr<ParameterExpression>;
 using CallExpPtr = shared_ptr<CallExpression>;
 using VariableExpPtr = shared_ptr<VariableExpression>;
 using ReturnExpPtr = shared_ptr<ReturnExpression>;
 using WhileExpPtr = shared_ptr<WhileExpression>;
+// using ModuleExpPtr = shared_ptr<ModuleExpression>;
+// using ClassExpPtr = shared_ptr<ClassExpression>;
+using DotExpPtr = shared_ptr<DotExpression>;
 
 enum class ExpressionKind
 {
@@ -75,7 +81,17 @@ enum class ExpressionKind
 	Assign,
 
 	Return,
-	While
+	While,
+	Module,
+	Class,
+	Dot
+};
+enum class AccessModifier
+{
+	Public,
+	Private,
+	Internal,
+	Protected
 };
 class Expression
 {
@@ -84,6 +100,7 @@ public:
 	int32_t column;
 	ExpressionKind kind;
 	Type type;
+	int ID;
 	Expression(int32_t line, int32_t column, ExpressionKind kind);
 
 	class Visitor
@@ -96,13 +113,16 @@ public:
 		virtual void Visit(BlockExpression* node) = 0;
 		virtual void Visit(IfThenExpression* node) = 0;
 		virtual void Visit(IfThenElseExpression* node) = 0;
-		virtual void Visit(DefVarExpression* node) = 0;
-		virtual void Visit(DefFunExpression* node) = 0;
-		virtual void Visit(ParameterExpression* node) = 0;
+		// virtual void Visit(DefVarExpression* node) = 0;
+		// virtual void Visit(DefFunExpression* node) = 0;
+		// virtual void Visit(ParameterExpression* node) = 0;
 		virtual void Visit(CallExpression* node) = 0;
 		virtual void Visit(VariableExpression* node) = 0;
 		virtual void Visit(ReturnExpression* node) = 0;
 		virtual void Visit(WhileExpression* node) = 0;
+		// virtual void Visit(ModuleExpression* node) = 0;
+		// virtual void Visit(ClassExpression* node) = 0;
+		virtual void Visit(DotExpression* node) = 0;
 	};
 	virtual void Accept(Visitor* visitor) = 0;
 };
@@ -171,36 +191,38 @@ public:
 	void Accept(Visitor* visitor) override;
 };
 
-class DefVarExpression : public Expression
-{
-public:
-	wstring name;
-	ExpPtr value;
-	DefVarExpression(int32_t line, int32_t column, wstring name, Type type,
-					 ExpPtr value);
-	void Accept(Visitor* visitor) override;
-};
+// class DefVarExpression : public Expression
+// {
+// public:
+// 	AccessModifier modifier;
+// 	wstring name;
+// 	ExpPtr value;
+// 	DefVarExpression(int32_t line, int32_t column, AccessModifier modifier,
+// 					 wstring name, Type type, ExpPtr value);
+// 	void Accept(Visitor* visitor) override;
+// };
 
-class DefFunExpression : public Expression
-{
-public:
-	wstring name;
-	vector<ParameterExpPtr> parameters;
-	ExpPtr body;
-	Type returnType;
-	DefFunExpression(int32_t line, int32_t column, wstring name,
-					 vector<ParameterExpPtr> parameters, ExpPtr body,
-					 Type returnType);
-	void Accept(Visitor* visitor) override;
-};
+// class DefFunExpression : public Expression
+// {
+// public:
+// 	AccessModifier modifier;
+// 	wstring name;
+// 	vector<ParameterExpPtr> parameters;
+// 	ExpPtr body;
+// 	Type returnType;
+// 	DefFunExpression(int32_t line, int32_t column, AccessModifier modifier,
+// 					 wstring name, vector<ParameterExpPtr> parameters,
+// 					 ExpPtr body, Type returnType);
+// 	void Accept(Visitor* visitor) override;
+// };
 
-class ParameterExpression : public Expression
-{
-public:
-	wstring name;
-	ParameterExpression(int32_t line, int32_t column, wstring name, Type type);
-	void Accept(Visitor* visitor) override;
-};
+// class ParameterExpression : public Expression
+// {
+// public:
+// 	wstring name;
+// 	ParameterExpression(int32_t line, int32_t column, wstring name, Type type);
+// 	void Accept(Visitor* visitor) override;
+// };
 
 class CallExpression : public Expression
 {
@@ -237,6 +259,39 @@ public:
 					ExpPtr body);
 	void Accept(Visitor* visitor) override;
 };
+// class ModuleExpression : public Expression
+// {
+// public:
+// 	AccessModifier modifier;
+// 	wstring name;
+// 	vector<DefVarExpPtr> variables;
+// 	vector<DefFunExpPtr> functions;
+// 	ModuleExpression(int32_t line, int32_t column, AccessModifier modifier,
+// 					 wstring name, vector<DefVarExpPtr> variables,
+// 					 vector<DefFunExpPtr> functions);
+// 	void Accept(Visitor* visitor) override;
+// };
+// class ClassExpression : public Expression
+// {
+// public:
+// 	AccessModifier modifier;
+// 	wstring name;
+// 	vector<DefVarExpPtr> fields;
+// 	vector<DefFunExpPtr> methods;
+
+// 	ClassExpression(int32_t line, int32_t column, AccessModifier modifier,
+// 					wstring name, vector<DefVarExpPtr> fields,
+// 					vector<DefFunExpPtr> methods);
+// 	void Accept(Visitor* visitor) override;
+// };
+class DotExpression : public Expression
+{
+public:
+	ExpPtr object;
+	wstring name;
+	DotExpression(int32_t line, int32_t column, ExpPtr object, wstring name);
+	void Accept(Visitor* visitor) override;
+};
 namespace Ast
 {
 UnaryExpPtr UnaryPlus(int32_t line, int32_t column, ExpPtr operand);
@@ -258,11 +313,11 @@ BinaryExpPtr NotEqual(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2);
 BinaryExpPtr And(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2);
 BinaryExpPtr Or(int32_t line, int32_t column, ExpPtr e1, ExpPtr e2);
 ConstantExpPtr Constant(int32_t line, int32_t column, any value);
-DefVarExpPtr DefineVariable(int32_t line, int32_t column, wstring name,
-							Type type, ExpPtr value);
-DefFuncExpPtr DefineFunction(int32_t line, int32_t column, wstring name,
-							 vector<ParameterExpPtr> parameters, ExpPtr body,
-							 Type returnType);
+// DefVarExpPtr DefVar(int32_t line, int32_t column, AccessModifier modifier,
+// 					wstring name, Type type, ExpPtr value);
+// DefFunExpPtr DefFun(int32_t line, int32_t column, AccessModifier modifier,
+// 					wstring name, vector<ParameterExpPtr> parameters,
+// 					ExpPtr body, Type returnType);
 CallExpPtr Call(int32_t line, int32_t column, ExpPtr function,
 				vector<ExpPtr> arguments);
 VariableExpPtr Variable(int32_t line, int32_t column, wstring name);
@@ -272,10 +327,17 @@ IfThenExpPtr IfThen(int32_t line, int32_t column, ExpPtr condition,
 					ExpPtr ifTrue);
 IfThenElseExpPtr IfThenElse(int32_t line, int32_t column, ExpPtr condition,
 							ExpPtr ifTrue, ExpPtr ifFalse);
-ParameterExpPtr Parameter(int32_t line, int32_t column, wstring name,
-						  Type type);
+// ParameterExpPtr Parameter(int32_t line, int32_t column, wstring name,
+// 						  Type type);
 ReturnExpPtr Return(int32_t line, int32_t column, ExpPtr value);
 WhileExpPtr While(int32_t line, int32_t column, ExpPtr condition, ExpPtr body);
+// ModuleExpPtr Module(int32_t line, int32_t column, AccessModifier modifier,
+// 					wstring name, vector<DefVarExpPtr> variables,
+// 					vector<DefFunExpPtr> functions);
+// ClassExpPtr Class(int32_t line, int32_t column, AccessModifier modifier,
+// 				  wstring name, vector<DefVarExpPtr> fields,
+// 				  vector<DefFunExpPtr> methods);
+DotExpPtr Dot(int32_t line, int32_t column, ExpPtr object, wstring name);
 } // namespace Ast
 
 wstring ExpressionKindToString(ExpressionKind kind);

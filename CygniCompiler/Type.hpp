@@ -1,15 +1,9 @@
 #ifndef TYPE_HPP
 #define TYPE_HPP
-// #include <memory>
 #include <string>
 #include <vector>
-// using std::shared_ptr;
 using std::vector;
 using std::wstring;
-// class Type;
-// class PrimitiveType;
-// using TypePtr = shared_ptr<Type>;
-// using PrimitiveTypePtr = shared_ptr<PrimitiveType>;
 enum class TypeKind
 {
 	Unknown,
@@ -21,7 +15,11 @@ enum class TypeKind
 	Char,
 	String,
 	Unit,
+	Array,
 	Function,
+	Class,
+	Module,
+	Namespace,
 	Object
 };
 class Type
@@ -30,8 +28,10 @@ public:
 	TypeKind kind;
 	wstring name;
 	vector<Type> parameters;
+
 	Type();
-	Type(wstring name, vector<Type> parameters);
+	Type(TypeKind kind, wstring name, vector<Type> parameters);
+
 	static Type Int();
 	static Type Long();
 	static Type Float();
@@ -40,7 +40,12 @@ public:
 	static Type Char();
 	static Type String();
 	static Type Unit();
+	static Type Array(Type elementType);
 	static Type Function(vector<Type> parameters);
+	static Type Module(wstring name, vector<Type> parameters);
+	static Type Class(wstring name, vector<Type> parameters);
+	static Type Namespace(wstring name);
+	static Type Object(wstring name, vector<Type> parameters);
 
 	bool IsInt();
 	bool IsLong();
@@ -50,7 +55,12 @@ public:
 	bool IsChar();
 	bool IsString();
 	bool IsUnit();
+	bool IsArray();
 	bool IsFunction();
+	bool IsModule();
+	bool IsClass();
+	bool IsNamespace();
+	bool IsObject();
 };
 wstring TypeToString(Type& type);
 bool operator==(Type& left, Type& right);

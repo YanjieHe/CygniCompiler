@@ -2,7 +2,7 @@
 #define PARSER_HPP
 #include "Exception.hpp"
 #include "Expression.hpp"
-#include "Module.hpp"
+#include "Namespace.hpp"
 #include "Token.hpp"
 #include <string>
 #include <vector>
@@ -18,19 +18,25 @@ public:
 
 	Parser(string path, vector<Token>& tokens);
 
-	Module Program();
+	CodeFile Program();
 
 private:
 	bool IsEof();
 	Token& Look();
 	void Move();
 	void Match(Tag tag);
+	wstring ParseIdentifier();
+	AccessModifier ParseAM(Token& token);
+	Module DefModule(AccessModifier modifier);
+	Class DefClass(AccessModifier modifier);
+	Function DefFunction(AccessModifier modifier);
+	Parameter ParseParameter();
+	LocalVariable DefLocalVariable();
+	Field DefField(AccessModifier modifier);
 
 	ExpPtr Block();
 	ExpPtr If();
 	ExpPtr While();
-	ExpPtr DefineVariable();
-	ExpPtr DefineFunction();
 	ExpPtr Return();
 	ExpPtr Statement();
 	ExpPtr Assign();
@@ -44,6 +50,8 @@ private:
 	ExpPtr Postfix();
 	ExpPtr Factor();
 	Type ParseType();
+	TypeKind ParseTypeKind(wstring text);
+	vector<wstring> ParseNamespace();
 };
 inline bool Parser::IsEof()
 {
@@ -75,5 +83,11 @@ inline void Parser::Match(Tag tag)
 	{
 		throw SyntaxException(Look().line, Look().column, L"syntax error");
 	}
+}
+inline wstring Parser::ParseIdentifier()
+{
+	Token& token = Look();
+	Match(Tag::Identifier);
+	return std::any_cast<wstring>(token.value);
 }
 #endif // PARSER_HPP

@@ -1,0 +1,28 @@
+(DefFun Function[Double, Double] CircleArea 
+       (Parameter Double radius) 
+       (Block Unit 
+             (DefVar Double PI 
+                    (Constant Double 3.14159))
+             (Return Double 
+                    (Call Double 
+                         (Variable Function[Double, Double, Double] Multiply) 
+                         (Variable Double PI) 
+                         (Call Double 
+                              (Variable Function[Double, Double] Square) 
+                              (Variable Double radius) ) ))))
+(DefFun Function[Double, Double] Square 
+       (Parameter Double x) 
+       (Block Unit 
+             (Return Double 
+                    (Call Double 
+                         (Variable Function[Double, Double, Double] Multiply) 
+                         (Variable Double x) 
+                         (Variable Double x) ))))
+(DefFun Function[Double, Double, Double] Multiply 
+       (Parameter Double x) 
+       (Parameter Double y) 
+       (Block Unit 
+             (Return Double 
+                    (Multiply Double 
+                             (Variable Double x) 
+                             (Variable Double y)))))

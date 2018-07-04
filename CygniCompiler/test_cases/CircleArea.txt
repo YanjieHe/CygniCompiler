@@ -1,15 +1,23 @@
-fun CircleArea(radius: Double): Double
+namespace AreaCalculation
+
+public module MathHelper
 {
-    var PI: Double = 3.1415926
-    return Multiply(PI, Square(radius))
+    public fun Square(x: Double): Double
+    {
+        return Multiply(x, x)
+    }
+
+    public fun Multiply(x: Double, y: Double): Double
+    {
+        return x * y
+    }
 }
 
-fun Square(x: Double): Double
+public module CircleAreaProgram
 {
-    return Multiply(x, x)
-}
-
-fun Multiply(x: Double, y: Double): Double
-{
-    return x * y
+    public fun CircleArea(radius: Double): Double
+    {
+        var PI: Double = 3.1415926
+        return MathHelper.Multiply(PI, MathHelper.Square(radius))
+    }
 }

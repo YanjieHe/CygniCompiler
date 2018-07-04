@@ -247,6 +247,12 @@ wstring TokenTagToString(Tag tag)
 		return L"Private";
 	case Tag::Protected:
 		return L"Protected";
+	case Tag::Internal:
+		return L"Internal";
+	case Tag::Module:
+		return L"module";
+	case Tag::Namespace:
+		return L"namespace";
 	default:
 		throw wstring(L"Error");
 	}

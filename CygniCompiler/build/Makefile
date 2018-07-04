@@ -123,33 +123,6 @@ CygniCompiler/fast:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/build
 .PHONY : CygniCompiler/fast
 
-ConstantCollector.o: ConstantCollector.cpp.o
-
-.PHONY : ConstantCollector.o
-
-# target to build an object file
-ConstantCollector.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ConstantCollector.cpp.o
-.PHONY : ConstantCollector.cpp.o
-
-ConstantCollector.i: ConstantCollector.cpp.i
-
-.PHONY : ConstantCollector.i
-
-# target to preprocess a source file
-ConstantCollector.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ConstantCollector.cpp.i
-.PHONY : ConstantCollector.cpp.i
-
-ConstantCollector.s: ConstantCollector.cpp.s
-
-.PHONY : ConstantCollector.s
-
-# target to generate assembly for a file
-ConstantCollector.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ConstantCollector.cpp.s
-.PHONY : ConstantCollector.cpp.s
-
 Exception.o: Exception.cpp.o
 
 .PHONY : Exception.o
@@ -258,32 +231,32 @@ Lexer.cpp.s:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Lexer.cpp.s
 .PHONY : Lexer.cpp.s
 
-Module.o: Module.cpp.o
+Namespace.o: Namespace.cpp.o
 
-.PHONY : Module.o
+.PHONY : Namespace.o
 
 # target to build an object file
-Module.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Module.cpp.o
-.PHONY : Module.cpp.o
+Namespace.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Namespace.cpp.o
+.PHONY : Namespace.cpp.o
 
-Module.i: Module.cpp.i
+Namespace.i: Namespace.cpp.i
 
-.PHONY : Module.i
+.PHONY : Namespace.i
 
 # target to preprocess a source file
-Module.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Module.cpp.i
-.PHONY : Module.cpp.i
+Namespace.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Namespace.cpp.i
+.PHONY : Namespace.cpp.i
 
-Module.s: Module.cpp.s
+Namespace.s: Namespace.cpp.s
 
-.PHONY : Module.s
+.PHONY : Namespace.s
 
 # target to generate assembly for a file
-Module.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Module.cpp.s
-.PHONY : Module.cpp.s
+Namespace.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Namespace.cpp.s
+.PHONY : Namespace.cpp.s
 
 Parser.o: Parser.cpp.o
 
@@ -311,6 +284,33 @@ Parser.s: Parser.cpp.s
 Parser.cpp.s:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Parser.cpp.s
 .PHONY : Parser.cpp.s
+
+Scope.o: Scope.cpp.o
+
+.PHONY : Scope.o
+
+# target to build an object file
+Scope.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Scope.cpp.o
+.PHONY : Scope.cpp.o
+
+Scope.i: Scope.cpp.i
+
+.PHONY : Scope.i
+
+# target to preprocess a source file
+Scope.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Scope.cpp.i
+.PHONY : Scope.cpp.i
+
+Scope.s: Scope.cpp.s
+
+.PHONY : Scope.s
+
+# target to generate assembly for a file
+Scope.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Scope.cpp.s
+.PHONY : Scope.cpp.s
 
 SourceReader.o: SourceReader.cpp.o
 
@@ -366,113 +366,32 @@ SymbolTable.cpp.s:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.s
 .PHONY : SymbolTable.cpp.s
 
-TestLexer.o: TestLexer.cpp.o
+Test.o: Test.cpp.o
 
-.PHONY : TestLexer.o
-
-# target to build an object file
-TestLexer.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestLexer.cpp.o
-.PHONY : TestLexer.cpp.o
-
-TestLexer.i: TestLexer.cpp.i
-
-.PHONY : TestLexer.i
-
-# target to preprocess a source file
-TestLexer.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestLexer.cpp.i
-.PHONY : TestLexer.cpp.i
-
-TestLexer.s: TestLexer.cpp.s
-
-.PHONY : TestLexer.s
-
-# target to generate assembly for a file
-TestLexer.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestLexer.cpp.s
-.PHONY : TestLexer.cpp.s
-
-TestParser.o: TestParser.cpp.o
-
-.PHONY : TestParser.o
+.PHONY : Test.o
 
 # target to build an object file
-TestParser.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestParser.cpp.o
-.PHONY : TestParser.cpp.o
+Test.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Test.cpp.o
+.PHONY : Test.cpp.o
 
-TestParser.i: TestParser.cpp.i
+Test.i: Test.cpp.i
 
-.PHONY : TestParser.i
-
-# target to preprocess a source file
-TestParser.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestParser.cpp.i
-.PHONY : TestParser.cpp.i
-
-TestParser.s: TestParser.cpp.s
-
-.PHONY : TestParser.s
-
-# target to generate assembly for a file
-TestParser.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestParser.cpp.s
-.PHONY : TestParser.cpp.s
-
-TestType.o: TestType.cpp.o
-
-.PHONY : TestType.o
-
-# target to build an object file
-TestType.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestType.cpp.o
-.PHONY : TestType.cpp.o
-
-TestType.i: TestType.cpp.i
-
-.PHONY : TestType.i
+.PHONY : Test.i
 
 # target to preprocess a source file
-TestType.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestType.cpp.i
-.PHONY : TestType.cpp.i
+Test.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Test.cpp.i
+.PHONY : Test.cpp.i
 
-TestType.s: TestType.cpp.s
+Test.s: Test.cpp.s
 
-.PHONY : TestType.s
-
-# target to generate assembly for a file
-TestType.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestType.cpp.s
-.PHONY : TestType.cpp.s
-
-TestTypeChecker.o: TestTypeChecker.cpp.o
-
-.PHONY : TestTypeChecker.o
-
-# target to build an object file
-TestTypeChecker.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestTypeChecker.cpp.o
-.PHONY : TestTypeChecker.cpp.o
-
-TestTypeChecker.i: TestTypeChecker.cpp.i
-
-.PHONY : TestTypeChecker.i
-
-# target to preprocess a source file
-TestTypeChecker.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestTypeChecker.cpp.i
-.PHONY : TestTypeChecker.cpp.i
-
-TestTypeChecker.s: TestTypeChecker.cpp.s
-
-.PHONY : TestTypeChecker.s
+.PHONY : Test.s
 
 # target to generate assembly for a file
-TestTypeChecker.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/TestTypeChecker.cpp.s
-.PHONY : TestTypeChecker.cpp.s
+Test.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Test.cpp.s
+.PHONY : Test.cpp.s
 
 Token.o: Token.cpp.o
 
@@ -591,9 +510,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CygniCompiler"
 	@echo "... edit_cache"
-	@echo "... ConstantCollector.o"
-	@echo "... ConstantCollector.i"
-	@echo "... ConstantCollector.s"
 	@echo "... Exception.o"
 	@echo "... Exception.i"
 	@echo "... Exception.s"
@@ -606,30 +522,24 @@ help:
 	@echo "... Lexer.o"
 	@echo "... Lexer.i"
 	@echo "... Lexer.s"
-	@echo "... Module.o"
-	@echo "... Module.i"
-	@echo "... Module.s"
+	@echo "... Namespace.o"
+	@echo "... Namespace.i"
+	@echo "... Namespace.s"
 	@echo "... Parser.o"
 	@echo "... Parser.i"
 	@echo "... Parser.s"
+	@echo "... Scope.o"
+	@echo "... Scope.i"
+	@echo "... Scope.s"
 	@echo "... SourceReader.o"
 	@echo "... SourceReader.i"
 	@echo "... SourceReader.s"
 	@echo "... SymbolTable.o"
 	@echo "... SymbolTable.i"
 	@echo "... SymbolTable.s"
-	@echo "... TestLexer.o"
-	@echo "... TestLexer.i"
-	@echo "... TestLexer.s"
-	@echo "... TestParser.o"
-	@echo "... TestParser.i"
-	@echo "... TestParser.s"
-	@echo "... TestType.o"
-	@echo "... TestType.i"
-	@echo "... TestType.s"
-	@echo "... TestTypeChecker.o"
-	@echo "... TestTypeChecker.i"
-	@echo "... TestTypeChecker.s"
+	@echo "... Test.o"
+	@echo "... Test.i"
+	@echo "... Test.s"
 	@echo "... Token.o"
 	@echo "... Token.i"
 	@echo "... Token.s"

@@ -7,17 +7,35 @@ Parser::Parser(string path, vector<Token>& tokens)
 	, tokenPointer{0}
 {
 }
-Module Parser::Program()
+CodeFile Parser::Program()
 {
-	int32_t line = Look().line;
-	int32_t column = Look().column;
-	vector<ExpPtr> expressions;
+	Match(Tag::Namespace);
+	vector<wstring> ns = ParseNamespace();
+
+	unordered_map<wstring, Module> modules;
+	unordered_map<wstring, Class> classes;
+	unordered_map<wstring, shared_ptr<Namespace>> uses;
 	while (!IsEof())
 	{
-		expressions.push_back(Statement());
+		AccessModifier am = ParseAM(Look());
+		Move();
+		if (Look().tag == Tag::Class)
+		{
+			Class classInfo = DefClass(am);
+			classes.insert({classInfo.type.name, classInfo});
+		}
+		else if (Look().tag == Tag::Module)
+		{
+			Module moduleInfo = DefModule(am);
+			modules.insert({moduleInfo.type.name, moduleInfo});
+		}
+		else
+		{
+			throw SyntaxException(Look().line, Look().column,
+								  L"expecting 'class' or 'module'");
+		}
 	}
-	ExpPtr tree = Ast::Block(line, column, expressions);
-	return Module(path, tree);
+	return CodeFile(path, ns, modules, classes, uses);
 }
 ExpPtr Parser::Block()
 {
@@ -67,66 +85,157 @@ ExpPtr Parser::While()
 	ExpPtr body = Block();
 	return Ast::While(line, column, condition, body);
 }
-ExpPtr Parser::DefineVariable()
+AccessModifier Parser::ParseAM(Token& token)
 {
-	int32_t line = Look().line;
-	int32_t column = Look().column;
-	Match(Tag::DefVar);
-	Token& token = Look();
-	Match(Tag::Identifier);
-	wstring name = any_cast<wstring>(token.value);
-	Match(Tag::Colon);
-	Type t = ParseType();
-	Match(Tag::Assign);
-	ExpPtr value = And();
-	return Ast::DefineVariable(line, column, name, t, value);
-}
-ExpPtr Parser::DefineFunction()
-{
-	int32_t line = Look().line;
-	int32_t column = Look().column;
-	Match(Tag::DefFun);
-	Token& token = Look();
-	Match(Tag::Identifier);
-	wstring name = any_cast<wstring>(token.value);
-	Match(Tag::LeftParenthesis);
-	if (Look().tag == Tag::RightParenthesis)
+	if (token.tag == Tag::Public)
 	{
-		Move();
-		Match(Tag::Colon);
-		Type returnType = ParseType();
-		ExpPtr body = Block();
-		return Ast::DefineFunction(line, column, name,
-								   vector<ParameterExpPtr>(), body, returnType);
+		return AccessModifier::Public;
+	}
+	else if (token.tag == Tag::Private)
+	{
+		return AccessModifier::Private;
+	}
+	else if (token.tag == Tag::Protected)
+	{
+		return AccessModifier::Protected;
+	}
+	else if (token.tag == Tag::Internal)
+	{
+		return AccessModifier::Internal;
 	}
 	else
 	{
-		token = Look();
-		Match(Tag::Identifier);
-		wstring parameterName = any_cast<wstring>(token.value);
-		Match(Tag::Colon);
-		Type t = ParseType();
-		vector<ParameterExpPtr> parameters;
-		parameters.push_back(
-			Ast::Parameter(token.line, token.column, parameterName, t));
+		throw SyntaxException(token.line, token.column,
+							  L"expecting access modifier");
+	}
+}
+Module Parser::DefModule(AccessModifier modifier)
+{
+	Match(Tag::Module);
+	Type moduleType = ParseType();
+	moduleType.kind = TypeKind::Module;
+	Match(Tag::LeftBrace);
+	vector<Field> fields;
+	unordered_map<wstring, Function> functions;
+	while (Look().tag != Tag::RightBrace)
+	{
+		AccessModifier am = ParseAM(Look());
+		Move();
+		if (Look().tag == Tag::DefVar)
+		{
+			Field field = DefField(am);
+			fields.push_back(field);
+		}
+		else if (Look().tag == Tag::DefFun)
+		{
+			Function function = DefFunction(am);
+			functions.insert({function.name, function});
+		}
+		else
+		{
+			throw SyntaxException(Look().line, Look().column,
+								  L"expecting 'var' or 'fun'");
+		}
+	}
+	Match(Tag::RightBrace);
+	// TO DO: initializer
+	return Module(modifier, moduleType, fields, functions);
+}
+Class Parser::DefClass(AccessModifier modifier)
+{
+	Match(Tag::Class);
+	Type classType = ParseType();
+	classType.kind = TypeKind::Class;
+	Match(Tag::LeftBrace);
+	vector<Field> fields;
+	unordered_map<wstring, Function> methods;
+	unordered_map<wstring, Function> constructors;
+	while (Look().tag != Tag::RightBrace)
+	{
+		AccessModifier am = ParseAM(Look());
+		Move();
+		if (Look().tag == Tag::DefVar)
+		{
+			Field field = DefField(am);
+			fields.push_back(field);
+		}
+		else if (Look().tag == Tag::DefFun)
+		{
+			Function method = DefFunction(am);
+			methods.insert({method.name, method});
+		}
+		else
+		{
+			throw SyntaxException(Look().line, Look().column,
+								  L"expecting 'var' or 'fun'");
+		}
+	}
+	Match(Tag::RightBrace);
+	return Class(modifier, classType, fields, methods, constructors);
+}
+Function Parser::DefFunction(AccessModifier modifier)
+{
+	Match(Tag::DefFun);
+	wstring name = ParseIdentifier();
+	Match(Tag::LeftParenthesis);
+	vector<Parameter> parameters;
+	if (Look().tag == Tag::RightParenthesis)
+	{
+		Match(Tag::RightParenthesis);
+	}
+	else
+	{
+		parameters.push_back(ParseParameter());
 		while (Look().tag != Tag::RightParenthesis)
 		{
 			Match(Tag::Comma);
-			token = Look();
-			Match(Tag::Identifier);
-			parameterName = any_cast<wstring>(token.value);
-			Match(Tag::Colon);
-			t = ParseType();
-			parameters.push_back(
-				Ast::Parameter(token.line, token.column, parameterName, t));
+			parameters.push_back(ParseParameter());
 		}
-		Move();
-		Match(Tag::Colon);
-		Type returnType = ParseType();
-		ExpPtr body = Block();
-		return Ast::DefineFunction(line, column, name, parameters, body,
-								   returnType);
+		Match(Tag::RightParenthesis);
 	}
+	Match(Tag::Colon);
+	Type returnType = ParseType();
+	Match(Tag::LeftBrace);
+	vector<LocalVariable> variables;
+	while (Look().tag == Tag::DefVar)
+	{
+		variables.push_back(DefLocalVariable());
+	}
+	vector<ExpPtr> expressions;
+	while (Look().tag != Tag::RightBrace)
+	{
+		expressions.push_back(Statement());
+	}
+	Match(Tag::RightBrace);
+	return Function(modifier, name, parameters, variables, expressions,
+					returnType);
+}
+Parameter Parser::ParseParameter()
+{
+	wstring name = ParseIdentifier();
+	Match(Tag::Colon);
+	Type type = ParseType();
+	return Parameter(name, type);
+}
+LocalVariable Parser::DefLocalVariable()
+{
+	Match(Tag::DefVar);
+	wstring name = ParseIdentifier();
+	Match(Tag::Colon);
+	Type type = ParseType();
+	Match(Tag::Assign);
+	ExpPtr value = Or();
+	return LocalVariable(name, type, value);
+}
+Field Parser::DefField(AccessModifier modifier)
+{
+	Match(Tag::DefVar);
+	wstring name = ParseIdentifier();
+	Match(Tag::Colon);
+	Type type = ParseType();
+	Match(Tag::Assign);
+	ExpPtr value = Or();
+	return Field(modifier, name, type, value);
 }
 ExpPtr Parser::Return()
 {
@@ -141,10 +250,6 @@ ExpPtr Parser::Statement()
 	{
 	case Tag::If:
 		return If();
-	case Tag::DefVar:
-		return DefineVariable();
-	case Tag::DefFun:
-		return DefineFunction();
 	case Tag::Return:
 		return Return();
 	case Tag::While:
@@ -320,26 +425,39 @@ ExpPtr Parser::Unary()
 ExpPtr Parser::Postfix()
 {
 	ExpPtr x = Factor();
-	while (Look().tag == Tag::LeftParenthesis)
+	while (Look().tag == Tag::LeftParenthesis || Look().tag == Tag::Dot ||
+		   Look().tag == Tag::LeftBracket)
 	{
 		Token& token = Look();
 		Move();
-		vector<ExpPtr> arguments;
-		if (Look().tag == Tag::RightParenthesis)
+		if (token.tag == Tag::LeftParenthesis)
 		{
+			vector<ExpPtr> arguments;
+			if (Look().tag == Tag::RightParenthesis)
+			{
+				x = Ast::Call(token.line, token.column, x, arguments);
+			}
+			else
+			{
+				arguments.push_back(And());
+			}
+			while (Look().tag != Tag::RightParenthesis)
+			{
+				Match(Tag::Comma);
+				arguments.push_back(And());
+			}
+			Move();
 			x = Ast::Call(token.line, token.column, x, arguments);
+		}
+		else if (token.tag == Tag::Dot)
+		{
+			wstring name = ParseIdentifier();
+			x = Ast::Dot(token.line, token.column, x, name);
 		}
 		else
 		{
-			arguments.push_back(And());
+			throw wstring(L"not implemented");
 		}
-		while (Look().tag != Tag::RightParenthesis)
-		{
-			Match(Tag::Comma);
-			arguments.push_back(And());
-		}
-		Move();
-		x = Ast::Call(token.line, token.column, x, arguments);
 	}
 	return x;
 }
@@ -382,14 +500,13 @@ ExpPtr Parser::Factor()
 		return Ast::Variable(token.line, token.column, name);
 	}
 	default:
-		throw SyntaxException(token.line, token.column, L"syntax error");
+		throw SyntaxException(token.line, token.column,
+							  L"syntax error: " + TokenTagToString(token.tag));
 	}
 }
 Type Parser::ParseType()
 {
-	Token& token = Look();
-	Match(Tag::Identifier);
-	wstring name = any_cast<wstring>(token.value);
+	wstring name = ParseIdentifier();
 	if (Look().tag == Tag::LeftBracket)
 	{
 		Move();
@@ -402,10 +519,38 @@ Type Parser::ParseType()
 			types.push_back(t);
 		}
 		Move();
-		return Type(name, types);
+		return Type(ParseTypeKind(name), name, types);
 	}
 	else
 	{
-		return Type(name, vector<Type>());
+		return Type(ParseTypeKind(name), name, vector<Type>());
 	}
+}
+TypeKind Parser::ParseTypeKind(wstring text)
+{
+	static unordered_map<wstring, TypeKind> kinds = {
+		{L"Int", TypeKind::Int},		 {L"Long", TypeKind::Long},
+		{L"Float", TypeKind::Float},	 {L"Double", TypeKind::Double},
+		{L"Boolean", TypeKind::Boolean}, {L"Char", TypeKind::Char},
+		{L"String", TypeKind::String},   {L"Unit", TypeKind::Unit},
+		{L"Array", TypeKind::Array},	 {L"Function", TypeKind::Function}};
+	if (kinds.find(text) != kinds.end())
+	{
+		return kinds[text];
+	}
+	else
+	{
+		return TypeKind::Object;
+	}
+}
+vector<wstring> Parser::ParseNamespace()
+{
+	vector<wstring> ns;
+	ns.push_back(ParseIdentifier());
+	while (Look().tag == Tag::Dot)
+	{
+		Match(Tag::Dot);
+		ns.push_back(ParseIdentifier());
+	}
+	return ns;
 }

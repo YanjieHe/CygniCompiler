@@ -1,0 +1,11 @@
+fun Factorial(n: Long): Long
+{
+    if n == 0L
+    {
+        return 1L
+    }
+    else
+    {
+        return n * Factorial(n - 1L)
+    }
+}

@@ -4,10 +4,157 @@
 using std::any_cast;
 using std::endl;
 using std::wcout;
-TypeChecker::TypeChecker()
-	: global()
-	, current{&global}
+// TypeChecker::TypeChecker(NamespaceList& namespaceList)
+// 	: namespaceList{namespaceList}
+// 	, currentNamespace{namespaceList.list.front()}
+// 	, global()
+// 	, current{&global}
+// {
+// 	for (Namespace& _namespace : namespaceList.list)
+// 	{
+// 		for (CodeFile& codeFile : _namespace.files)
+// 		{
+// 			for (ModuleExpPtr& module : codeFile.modules)
+// 			{
+// 				module->Accept(this);
+// 			}
+// 			for (ClassExpPtr& _class : codeFile.classes)
+// 			{
+// 				_class->Accept(this);
+// 			}
+// 		}
+// 	}
+// }
+TypeChecker::TypeChecker(NamespaceRecord& nsRecord)
+	: nsRecord{nsRecord}
 {
+	Scope globalScope(nullptr);
+	scope = &globalScope;
+	for (auto& pair : nsRecord.record)
+	{
+		auto& nsPtr = pair.second;
+		Collect(nsPtr);
+	}
+	for (auto& pair : nsRecord.record)
+	{
+		auto& nsPtr = pair.second;
+		Check(nsPtr);
+	}
+}
+void TypeChecker::Check(shared_ptr<Namespace> nsPtr)
+{
+	Scope nextScope(scope);
+	Scope* parent = scope;
+	scope = &nextScope;
+	Collect(nsPtr);
+	for (auto& pair : nsPtr->modules)
+	{
+		Module& moduleInfo = pair.second;
+		CheckModule(moduleInfo);
+	}
+	for (auto& pair : nsPtr->classes)
+	{
+		Class& classInfo = pair.second;
+		CheckClass(classInfo);
+	}
+	scope = parent;
+}
+void TypeChecker::CheckModule(Module& moduleInfo)
+{
+	Scope nextScope(scope);
+	Scope* parent = scope;
+	scope = &nextScope;
+	for (auto& field : moduleInfo.fields)
+	{
+		CheckField(field);
+	}
+	for (auto& p : moduleInfo.functions)
+	{
+		Function& function = p.second;
+		CheckFunction(function);
+	}
+	scope = parent;
+}
+void TypeChecker::CheckClass(Class& classInfo)
+{
+	Scope nextScope(scope);
+	Scope* parent = scope;
+	scope = &nextScope;
+	for (auto& field : classInfo.fields)
+	{
+		CheckField(field);
+	}
+	for (auto& p : classInfo.functions)
+	{
+		Function& function = p.second;
+		CheckFunction(function);
+	}
+	scope = parent;
+}
+void TypeChecker::CheckField(Field& field)
+{
+	field.value->Accept(this);
+	if (field.value->type != field.type)
+	{
+		throw TypeException(field.value->line, field.value->column,
+							L"Cannot implicitly convert type `" +
+								TypeToString(field.value->type) + L" to '" +
+								TypeToString(field.type) + L"'");
+	}
+}
+void TypeChecker::CheckFunction(Function& function)
+{
+	Scope nextScope(scope);
+	Scope* parent = scope;
+	scope = &nextScope;
+	for (Parameter& p : function.parameters)
+	{
+		scope->Put(p.name, p);
+	}
+	for (LocalVariable& v : function.variables)
+	{
+		scope->Put(v.name, v);
+	}
+	for (LocalVariable& v : function.variables)
+	{
+		v.value->Accept(this);
+	}
+	for (ExpPtr& e : function.expressions)
+	{
+		e->Accept(this);
+	}
+	scope = parent;
+}
+void TypeChecker::Collect(shared_ptr<Namespace> nsPtr)
+{
+	for (auto& pair : nsPtr->modules)
+	{
+		Module& moduleInfo = pair.second;
+		scope->Put(moduleInfo.type.name, moduleInfo);
+		for (auto& field : moduleInfo.fields)
+		{
+			scope->Put(field.name, field);
+		}
+		for (auto& p : moduleInfo.functions)
+		{
+			Function& function = p.second;
+			scope->Put(function.name, function);
+		}
+	}
+	for (auto& pair : nsPtr->classes)
+	{
+		Class& classInfo = pair.second;
+		scope->Put(classInfo.type.name, classInfo);
+		for (auto& field : classInfo.fields)
+		{
+			scope->Put(field.name, field);
+		}
+		for (auto& p : classInfo.functions)
+		{
+			Function& function = p.second;
+			scope->Put(function.name, function);
+		}
+	}
 }
 void TypeChecker::Visit(ConstantExpression* node)
 {
@@ -86,10 +233,10 @@ void TypeChecker::Visit(UnaryExpression* node)
 		}
 		else
 		{
-			throw TypeException(
-				node->line, node->column,
-				L"The 'not' operator cannot be applied to operand of type " +
-					TypeToString(node->operand->type));
+			throw TypeException(node->line, node->column,
+								L"The 'not' operator cannot be applied to "
+								L"operand of type " +
+									TypeToString(node->operand->type));
 		}
 	}
 	else
@@ -202,6 +349,14 @@ void TypeChecker::Visit(BinaryExpression* node)
 		{
 			node->type = Type::Boolean();
 		}
+		else if (left.IsLong() && right.IsLong())
+		{
+			node->type = Type::Boolean();
+		}
+		else if (left.IsFloat() && right.IsFloat())
+		{
+			node->type = Type::Boolean();
+		}
 		else if (left.IsDouble() && right.IsDouble())
 		{
 			node->type = Type::Boolean();
@@ -239,22 +394,22 @@ void TypeChecker::Visit(BinaryExpression* node)
 void TypeChecker::Visit(AssignExpression* node)
 {
 	node->value->Accept(this);
-	if (current->HasSymbol(node->name))
+	if (scope->Contains(node->name))
 	{
-		Symbol symbol = current->Find(node->name);
-		if (symbol.kind == SymbolKind::VariableSymbol)
+		any value = scope->Get(node->name);
+		if (value.type() == typeid(LocalVariable))
 		{
-			Type type = any_cast<Type>(symbol.value);
-			if (type == node->value->type)
+			node->type = any_cast<LocalVariable>(value).type;
+			if (node->type == node->value->type)
 			{
-				node->type = type;
 			}
 			else
 			{
 				throw TypeException(node->line, node->column,
 									L"Cannot implicitly convert type `" +
 										TypeToString(node->value->type) +
-										L" to '" + TypeToString(type) + L"'");
+										L" to '" + TypeToString(node->type) +
+										L"'");
 			}
 		}
 		else
@@ -307,40 +462,6 @@ void TypeChecker::Visit(IfThenElseExpression* node)
 							L"value cannot be converted to 'Boolean'");
 	}
 }
-void TypeChecker::Visit(DefVarExpression* node)
-{
-	node->value->Accept(this);
-	Type& rtype = node->value->type;
-	if (node->type == rtype)
-	{
-		current->Put(node->name,
-					 Symbol(SymbolKind::VariableSymbol, node->type));
-	}
-	else
-	{
-		throw TypeException(node->line, node->column,
-							L"Cannot implicitly convert type '" +
-								TypeToString(node->type) + L"' to '" +
-								TypeToString(rtype) + L"'");
-	}
-}
-void TypeChecker::Visit(DefFunExpression* node)
-{
-	SymbolTable* prev = current;
-	SymbolTable newTable(prev);
-	current = &newTable;
-	current->Put(node->name, Symbol(SymbolKind::FunctionSymbol, node->type));
-	for (ParameterExpPtr& p : node->parameters)
-	{
-		current->Put(p->name, Symbol(SymbolKind::VariableSymbol, p->type));
-	}
-	node->body->Accept(this);
-	current = prev;
-}
-void TypeChecker::Visit(ParameterExpression*)
-{
-	throw wstring(L"not implemented");
-}
 void TypeChecker::Visit(CallExpression* node)
 {
 	node->function->Accept(this);
@@ -378,24 +499,36 @@ void TypeChecker::Visit(CallExpression* node)
 }
 void TypeChecker::Visit(VariableExpression* node)
 {
-	if (current->HasSymbol(node->name))
+	if (scope->Contains(node->name))
 	{
-		Symbol symbol = current->Find(node->name);
-		if (symbol.kind == SymbolKind::VariableSymbol)
+		any value = scope->Get(node->name);
+		if (value.type() == typeid(LocalVariable))
 		{
-			Type type = any_cast<Type>(symbol.value);
-			node->type = type;
+			node->type = any_cast<LocalVariable>(value).type;
 		}
-		else if (symbol.kind == SymbolKind::FunctionSymbol)
+		else if (value.type() == typeid(Parameter))
 		{
-			Type type = any_cast<Type>(symbol.value);
-			node->type = type;
+			node->type = any_cast<Parameter>(value).type;
+		}
+		else if (value.type() == typeid(Field))
+		{
+			node->type = any_cast<Field>(value).type;
+		}
+		else if (value.type() == typeid(Function))
+		{
+			node->type = any_cast<Function>(value).functionType;
+		}
+		else if (value.type() == typeid(Module))
+		{
+			node->type = any_cast<Module>(value).type;
+		}
+		else if (value.type() == typeid(Class))
+		{
+			node->type = any_cast<Class>(value).type;
 		}
 		else
 		{
-			throw TypeException(node->line, node->column,
-								L"name '" + node->name +
-									L"' is not a variable");
+			throw wstring(L"not supported type");
 		}
 	}
 	else
@@ -421,5 +554,48 @@ void TypeChecker::Visit(WhileExpression* node)
 	{
 		throw TypeException(node->line, node->column,
 							L"value cannot be converted to 'Boolean'");
+	}
+}
+void TypeChecker::Visit(DotExpression* node)
+{
+	node->object->Accept(this);
+	Type& objType = node->object->type;
+	if (objType.IsModule())
+	{
+		Module moduleInfo = any_cast<Module>(scope->Get(objType.name));
+		if (moduleInfo.fieldMap.find(node->name) != moduleInfo.fieldMap.end())
+		{
+			node->type = moduleInfo.fieldMap[node->name].type;
+		}
+		else if (moduleInfo.functions.find(node->name) !=
+				 moduleInfo.functions.end())
+		{
+			node->type = moduleInfo.functions[node->name].functionType;
+		}
+		else
+		{
+			throw TypeException(node->line, node->column, L"field not defined");
+		}
+	}
+	else if (objType.IsClass())
+	{
+		Class classInfo = any_cast<Class>(scope->Get(objType.name));
+		if (classInfo.fieldMap.find(node->name) != classInfo.fieldMap.end())
+		{
+			node->type = classInfo.fieldMap[node->name].type;
+		}
+		else if (classInfo.functions.find(node->name) !=
+				 classInfo.functions.end())
+		{
+			node->type = classInfo.functions[node->name].functionType;
+		}
+		else
+		{
+			throw TypeException(node->line, node->column, L"field not defined");
+		}
+	}
+	else
+	{
+		throw TypeException(node->line, node->column, L"error type");
 	}
 }

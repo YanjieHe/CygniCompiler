@@ -1,0 +1,5 @@
+fun Add(x: Int, y: Int): Unit
+{
+    var z: Int = x + y
+    WriteLn(z)
+}

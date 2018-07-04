@@ -4,94 +4,75 @@ Type::Type()
 	, name{L"Unknown"}
 {
 }
-Type::Type(wstring name, vector<Type> parameters)
-	: name{name}
+Type::Type(TypeKind kind, wstring name, vector<Type> parameters)
+	: kind{kind}
+	, name{name}
 	, parameters(parameters)
 {
-	if (name == L"Int")
-	{
-		kind = TypeKind::Int;
-	}
-	else if (name == L"Long")
-	{
-		kind = TypeKind::Long;
-	}
-	else if (name == L"Float")
-	{
-		kind = TypeKind::Float;
-	}
-	else if (name == L"Double")
-	{
-		kind = TypeKind::Double;
-	}
-	else if (name == L"Boolean")
-	{
-		kind = TypeKind::Boolean;
-	}
-	else if (name == L"Char")
-	{
-		kind = TypeKind::Char;
-	}
-	else if (name == L"String")
-	{
-		kind = TypeKind::Long;
-	}
-	else if (name == L"Unit")
-	{
-		kind = TypeKind::Unit;
-	}
-	else if (name == L"Function")
-	{
-		kind = TypeKind::Function;
-	}
-	else
-	{
-		kind = TypeKind::Object;
-	}
 }
 Type Type::Int()
 {
-	static Type type = Type(L"Int", vector<Type>());
+	static Type type = Type(TypeKind::Int, L"Int", vector<Type>());
 	return type;
 }
 Type Type::Long()
 {
-	static Type type = Type(L"Long", vector<Type>());
+	static Type type = Type(TypeKind::Long, L"Long", vector<Type>());
 	return type;
 }
 Type Type::Float()
 {
-	static Type type = Type(L"Float", vector<Type>());
+	static Type type = Type(TypeKind::Float, L"Float", vector<Type>());
 	return type;
 }
 Type Type::Double()
 {
-	static Type type = Type(L"Double", vector<Type>());
+	static Type type = Type(TypeKind::Double, L"Double", vector<Type>());
 	return type;
 }
 Type Type::Boolean()
 {
-	static Type type = Type(L"Boolean", vector<Type>());
+	static Type type = Type(TypeKind::Boolean, L"Boolean", vector<Type>());
 	return type;
 }
 Type Type::Char()
 {
-	static Type type = Type(L"Char", vector<Type>());
+	static Type type = Type(TypeKind::Char, L"Char", vector<Type>());
 	return type;
 }
 Type Type::String()
 {
-	static Type type = Type(L"String", vector<Type>());
+	static Type type = Type(TypeKind::String, L"String", vector<Type>());
 	return type;
 }
 Type Type::Unit()
 {
-	static Type type = Type(L"Unit", vector<Type>());
+	static Type type = Type(TypeKind::Unit, L"Unit", vector<Type>());
 	return type;
+}
+Type Type::Array(Type elementType)
+{
+	return Type(TypeKind::Array, L"Array", vector<Type>{elementType});
 }
 Type Type::Function(vector<Type> parameters)
 {
-	return Type(L"Function", parameters);
+	return Type(TypeKind::Function, L"Function", parameters);
+}
+Type Type::Module(wstring name, vector<Type> parameters)
+{
+	return Type(TypeKind::Module, name, parameters);
+}
+Type Type::Class(wstring name, vector<Type> parameters)
+{
+	return Type(TypeKind::Class, name, parameters);
+}
+Type Type::Namespace(wstring name)
+{
+	return Type(TypeKind::Namespace, name, vector<Type>());
+}
+Type Type::Object(wstring name, vector<Type> parameters)
+{
+	return Type(TypeKind::Object, name, parameters);
 }
 bool Type::IsInt()
 {
@@ -125,9 +106,29 @@ bool Type::IsUnit()
 {
 	return kind == TypeKind::Unit;
 }
+bool Type::IsArray()
+{
+	return kind == TypeKind::Array;
+}
 bool Type::IsFunction()
 {
 	return kind == TypeKind::Function;
+}
+bool Type::IsModule()
+{
+	return kind == TypeKind::Module;
+}
+bool Type::IsClass()
+{
+	return kind == TypeKind::Class;
+}
+bool Type::IsNamespace()
+{
+	return kind == TypeKind::Namespace;
+}
+bool Type::IsObject()
+{
+	return kind == TypeKind::Object;
 }
 wstring TypeToString(Type& type)
 {

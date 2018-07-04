@@ -1,5 +1,10 @@
-fun Add(x: Int, y: Int): Unit
+namespace ConsoleApplication
+
+public module Program
 {
-    var z: Int = x + y
-    WriteLn(z)
+    public fun Add(x: Int, y: Int): Int
+    {
+        var z: Int = x + y
+        return z
+    }    
 }

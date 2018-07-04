@@ -1,29 +1,23 @@
-(Block Unit 
-      (DefFun Function[Double, Double] CircleArea 
-             (Parameter Double radius) 
-             (Block Unit 
-                   (DefVar Double PI 
-                          (Constant Double 3.14159))
-                   (Return Double 
-                          (Call Double 
-                               (Variable Function[Double, Double, Double] Multiply) 
-                               (Variable Double PI) 
-                               (Call Double 
-                                    (Variable Function[Double, Double] Square) 
-                                    (Variable Double radius) ) ))))
-      (DefFun Function[Double, Double] Square 
-             (Parameter Double x) 
-             (Block Unit 
-                   (Return Double 
-                          (Call Double 
-                               (Variable Function[Double, Double, Double] Multiply) 
-                               (Variable Double x) 
-                               (Variable Double x) ))))
-      (DefFun Function[Double, Double, Double] Multiply 
-             (Parameter Double x) 
-             (Parameter Double y) 
-             (Block Unit 
-                   (Return Double 
-                          (Multiply Double 
-                                   (Variable Double x) 
-                                   (Variable Double y))))))
+(fun CircleArea (radius Double)
+    (var PI
+        (Constant Double 3.14159))
+    (Return Double
+           (Call Double
+                (Dot
+                 (Variable MathHelper MathHelper) Multiply)
+                (Variable Double PI)
+                (Call Double
+                     (Dot
+                      (Variable MathHelper MathHelper) Square)
+                     (Variable Double radius)))))
+(fun Multiply (x Double y Double)
+    (Return Double
+           (Multiply Double
+                    (Variable Double x)
+                    (Variable Double y))))
+(fun Square (x Double)
+    (Return Double
+           (Call Double
+                (Variable Function[Double, Double, Double] Multiply)
+                (Variable Double x)
+                (Variable Double x))))
