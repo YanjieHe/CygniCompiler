@@ -23,6 +23,8 @@ vector
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp
 Test.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
+Instruction.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
 VM.hpp

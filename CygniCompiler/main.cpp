@@ -22,6 +22,6 @@ int main()
 	// TestTypeChecker::TestSummation();
 
 	// TestCompiler::TestAddTwoNumbers();
-	TestCompiler::TestMax();
+	TestCompiler::TestFactorial();
 	return 0;
 }

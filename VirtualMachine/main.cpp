@@ -3,6 +3,6 @@
 int main()
 {
 	std::locale::global(std::locale(""));
-	TestMax();
+	TestFactorial();
 	return 0;
 }

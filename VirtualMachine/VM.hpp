@@ -30,4 +30,5 @@ inline int32_t GetUShort(ByteCode* code, int32_t pc)
 {
 	return ((*code)[pc + 1]) + ((*code)[pc + 2] << 8);
 }
+void ShowStack(vector<Value>& stack);
 #endif // VM_HPP

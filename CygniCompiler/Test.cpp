@@ -328,3 +328,34 @@ void TestCompiler::TestMax()
 	}
 	wcout << endl << endl;
 }
+void TestCompiler::TestFactorial()
+{
+	wcout << L"Test Function: " << __FUNCTION__ << endl;
+	string path = "test_cases/factorial.txt";
+	Lexer lexer(path);
+	try
+	{
+		Parser parser(path, lexer.tokens);
+		NamespaceRecord nsRecord;
+		CodeFile file = parser.Program();
+		nsRecord.AddFile(file);
+		TypeChecker checker(nsRecord);
+		TestParser::ViewNamespaceRecord(nsRecord);
+		Compiler compiler;
+		CompiledProgram program = compiler.Compile(nsRecord);
+		ByteCode code = program.EmitByteCode();
+		for (auto& b : code)
+		{
+			wcout << b << L"," << endl;
+		}
+	}
+	catch (SyntaxException& ex)
+	{
+		TestParser::ShowSyntaxError(ex);
+	}
+	catch (TypeException& ex)
+	{
+		TestTypeChecker::ShowTypeError(ex);
+	}
+	wcout << endl << endl;
+}

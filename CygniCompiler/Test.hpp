@@ -43,5 +43,6 @@ namespace TestCompiler
 {
 void TestAddTwoNumbers();
 void TestMax();
+void TestFactorial();
 };	 // namespace TestCompiler
 #endif // TEST_HPP

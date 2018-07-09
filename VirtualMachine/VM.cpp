@@ -180,6 +180,7 @@ void VM::Run()
 			int32_t index = (*code)[pc + 1];
 			sp++;
 			stack[sp].int_v = stack[fp + index].int_v;
+			// wcout << L"push local int = " << stack[sp].int_v << endl;
 			pc += 2;
 			break;
 		}
@@ -562,20 +563,23 @@ void VM::Run()
 		case return_int:
 		{
 			int32_t result = stack[sp].int_v;
+			// ShowStack(stack);
+			// wcout << L"sp = " << sp << L" " << L"current result = " << result
+			// 	  << endl;
 			int32_t offset = fp + function->args + function->locals;
 			pc = stack[offset].int_v;
-			wcout << L"load pc index = " << offset << endl;
+			// wcout << L"load pc index = " << offset << endl;
 			function = (Function*) stack[offset + 1].object;
+			sp = fp;
 			fp = stack[offset + 2].int_v;
-
-			wcout << L"previous function pointer = " << fp << endl;
+			// wcout << L"restore fp = " << fp << endl;
+			// wcout << L"previous function pointer = " << fp << endl;
 			if (function)
 			{
 				code = &(function->code);
 				constantPool = &(function->constants);
-				sp = fp + function->args + function->locals + 3;
-				sp++;
-				wcout << L"current result = " << result << endl;
+				// sp = fp + function->args + function->locals + 3;
+				// sp++;
 				stack[sp].int_v = result;
 				break;
 			}
@@ -588,18 +592,19 @@ void VM::Run()
 		}
 		case invoke:
 		{
-			wcout << L"load function at index " << sp << endl;
+			//	wcout << L"load function at index " << sp << endl;
 			Function* f = (Function*) stack[sp].object;
-			wcout << L"function id = " << f->index << endl;
-			wcout << L"function args = " << f->args << endl;
+			//	wcout << L"function id = " << f->index << endl;
+			//	wcout << L"function args = " << f->args << endl;
 			pc++;
 
 			int32_t previousFunctionPointer = fp;
-			wcout << L"previous function pointer = " << fp << endl;
+			//	wcout << L"previous function pointer = " << fp << endl;
 			fp = sp - (f->args);
+			// wcout << L"fp = " << fp << endl;
 			sp = fp + (f->args) + (f->locals);
 			stack[sp].int_v = pc;
-			wcout << L"store pc index = " << sp << endl;
+			// wcout << L"store pc index = " << sp << endl;
 			sp++;
 			stack[sp].object = function;
 			sp++;
@@ -621,7 +626,7 @@ void VM::Run()
 			pc += 3;
 			sp++;
 			stack[sp].object = f;
-			wcout << L"store function at index " << sp << endl;
+			//	wcout << L"store function at index " << sp << endl;
 			break;
 		}
 		case jump_if_false:
@@ -662,4 +667,13 @@ void VM::Run()
 		}
 		}
 	}
+}
+void ShowStack(vector<Value>& stack)
+{
+	for (int32_t i = 0; i < 100; i++)
+	{
+		wcout << i << L"(" << stack[i].int_v << L")" << L", ";
+	}
+	wcout << 100 << L"(" << stack[100].int_v << L")";
+	wcout << endl;
 }
