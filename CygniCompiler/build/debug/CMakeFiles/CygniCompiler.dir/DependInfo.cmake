@@ -4,15 +4,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Compiler.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Exception.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Expression.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Expression.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ExpressionViewer.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/ExpressionViewer.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Lexer.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Lexer.cpp.o"
+  "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Location.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Namespace.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Parser.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Parser.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Scope.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Scope.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SourceReader.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/SourceReader.cpp.o"
-  "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Test.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Test.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Token.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Token.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Type.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build/debug/CMakeFiles/CygniCompiler.dir/Type.cpp.o"

@@ -43,7 +43,7 @@ Function::Function(AccessModifier modifier, wstring name,
 {
 	vector<Type> types;
 	types.reserve(parameters.size() + 1);
-	for (int i = 0, n = parameters.size(); i < n; i++)
+	for (int32_t i = 0, n = parameters.size(); i < n; i++)
 	{
 		types.push_back(parameters.at(i).type);
 	}
@@ -54,7 +54,7 @@ Module::Module()
 {
 }
 Module::Module(AccessModifier modifier, Type type, vector<Field> fields,
-			   unordered_map<wstring, Function> functions)
+			   vector<Function> functions)
 	: modifier{modifier}
 	, type{type}
 	, fields{fields}
@@ -64,12 +64,16 @@ Module::Module(AccessModifier modifier, Type type, vector<Field> fields,
 	{
 		fieldMap.insert({field.name, field});
 	}
+	for (Function function : functions)
+	{
+		functionMap.insert({function.name, function});
+	}
 }
 Class::Class()
 {
 }
 Class::Class(AccessModifier modifier, Type type, vector<Field> fields,
-			 unordered_map<wstring, Function> functions,
+			 vector<Function> functions,
 			 unordered_map<wstring, Function> constructors)
 	: modifier{modifier}
 	, type{type}
@@ -80,6 +84,10 @@ Class::Class(AccessModifier modifier, Type type, vector<Field> fields,
 	for (Field field : fields)
 	{
 		fieldMap.insert({field.name, field});
+	}
+	for (Function function : functions)
+	{
+		functionMap.insert({function.name, function});
 	}
 }
 Namespace::Namespace()
@@ -105,7 +113,7 @@ void NamespaceRecord::AddFile(CodeFile& file)
 	if (found)
 	{
 		shared_ptr<Namespace> nsPtr = record[file.ns.front()];
-		for (int i = 1, size = file.ns.size(); i < size; i++)
+		for (int32_t i = 1, size = file.ns.size(); i < size; i++)
 		{
 			wstring subNs = file.ns.at(i);
 			found =
@@ -130,7 +138,7 @@ void NamespaceRecord::AddFile(CodeFile& file)
 	{
 		shared_ptr<Namespace> nsPtr = make_shared<Namespace>();
 		nsPtr->name = file.ns.front();
-		for (int i = 1, size = file.ns.size(); i < size; i++)
+		for (int32_t i = 1, size = file.ns.size(); i < size; i++)
 		{
 			wstring subNs = file.ns.at(i);
 			shared_ptr<Namespace> subNsPtr = make_shared<Namespace>();

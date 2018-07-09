@@ -37,5 +37,11 @@ void ShowTypeError(TypeException& ex);
 void TestMultiplication();
 void TestCircleArea();
 void TestSummation();
-};	 // namespace TestTypeChecker
+}; // namespace TestTypeChecker
+
+namespace TestCompiler
+{
+void TestAddTwoNumbers();
+void TestMax();
+};	 // namespace TestCompiler
 #endif // TEST_HPP

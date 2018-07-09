@@ -1,4 +1,5 @@
 #include "Test.hpp"
+#include "Compiler.hpp"
 #include "ExpressionViewer.hpp"
 #include "Lexer.hpp"
 #include "Parser.hpp"
@@ -169,14 +170,6 @@ void TestParser::TestMultiplication()
 		Parser parser(path, lexer.tokens);
 		CodeFile file = parser.Program();
 		ExpressionViewer viewer;
-		// for (auto& module : file.modules)
-		// {
-		// 	module->Accept(&viewer);
-		// }
-		// for (auto& _class : file.classes)
-		// {
-		// 	_class->Accept(&viewer);
-		// }
 	}
 	catch (SyntaxException& ex)
 	{
@@ -205,24 +198,6 @@ void TestTypeChecker::ShowTypeError(TypeException& ex)
 	wcout << ex.message << endl;
 }
 
-// void TestTypeChecker::ViewExpressionTree(NamespaceList& namespaceList)
-// {
-// 	ExpressionViewer viewer;
-// 	for (Namespace& _namespace : namespaceList.list)
-// 	{
-// 		for (auto& codeFile : _namespace.files)
-// 		{
-// 			for (auto& module : codeFile.modules)
-// 			{
-// 				module->Accept(&viewer);
-// 			}
-// 			for (auto& _class : codeFile.classes)
-// 			{
-// 				_class->Accept(&viewer);
-// 			}
-// 		}
-// 	}
-// }
 void TestTypeChecker::TestMultiplication()
 {
 	wcout << L"TestMultiplication" << endl;
@@ -239,13 +214,11 @@ void TestTypeChecker::TestMultiplication()
 	}
 	catch (SyntaxException& ex)
 	{
-		wcout << L"(" << ex.line << L", " << ex.column << L"): ";
-		wcout << ex.message << endl;
+		TestParser::ShowSyntaxError(ex);
 	}
 	catch (TypeException& ex)
 	{
-		wcout << L"(" << ex.line << L", " << ex.column << L"): ";
-		wcout << ex.message << endl;
+		TestTypeChecker::ShowTypeError(ex);
 	}
 	wcout << endl << endl;
 }
@@ -265,13 +238,11 @@ void TestTypeChecker::TestCircleArea()
 	}
 	catch (SyntaxException& ex)
 	{
-		wcout << L"(" << ex.line << L", " << ex.column << L"): ";
-		wcout << ex.message << endl;
+		TestParser::ShowSyntaxError(ex);
 	}
 	catch (TypeException& ex)
 	{
-		wcout << L"(" << ex.line << L", " << ex.column << L"): ";
-		wcout << ex.message << endl;
+		TestTypeChecker::ShowTypeError(ex);
 	}
 	wcout << endl << endl;
 }
@@ -284,22 +255,76 @@ void TestTypeChecker::TestSummation()
 	{
 		Parser parser(path, lexer.tokens);
 		CodeFile codeFile = parser.Program();
-		// Namespace _namespace(codeFile.name);
-		// _namespace.AddCodeFile(codeFile);
-		// NamespaceList nameSpaceList;
-		// nameSpaceList.Add(_namespace);
-		// TypeChecker checker(nameSpaceList);
-		// ViewExpressionTree(nameSpaceList);
 	}
 	catch (SyntaxException& ex)
 	{
-		wcout << L"(" << ex.line << L", " << ex.column << L"): ";
-		wcout << ex.message << endl;
+		TestParser::ShowSyntaxError(ex);
 	}
 	catch (TypeException& ex)
 	{
-		wcout << L"(" << ex.line << L", " << ex.column << L"): ";
-		wcout << ex.message << endl;
+		TestTypeChecker::ShowTypeError(ex);
+	}
+	wcout << endl << endl;
+}
+void TestCompiler::TestAddTwoNumbers()
+{
+	wcout << L"Test Function: " << __FUNCTION__ << endl;
+	string path = "test_cases/add_two_numbers.txt";
+	Lexer lexer(path);
+	try
+	{
+		Parser parser(path, lexer.tokens);
+		NamespaceRecord nsRecord;
+		CodeFile file = parser.Program();
+		nsRecord.AddFile(file);
+		TypeChecker checker(nsRecord);
+		TestParser::ViewNamespaceRecord(nsRecord);
+		Compiler compiler;
+		CompiledProgram program = compiler.Compile(nsRecord);
+		ByteCode code = program.EmitByteCode();
+		for (auto& b : code)
+		{
+			wcout << b << L"," << endl;
+		}
+	}
+	catch (SyntaxException& ex)
+	{
+		TestParser::ShowSyntaxError(ex);
+	}
+	catch (TypeException& ex)
+	{
+		TestTypeChecker::ShowTypeError(ex);
+	}
+	wcout << endl << endl;
+}
+void TestCompiler::TestMax()
+{
+	wcout << L"Test Function: " << __FUNCTION__ << endl;
+	string path = "test_cases/max.txt";
+	Lexer lexer(path);
+	try
+	{
+		Parser parser(path, lexer.tokens);
+		NamespaceRecord nsRecord;
+		CodeFile file = parser.Program();
+		nsRecord.AddFile(file);
+		TypeChecker checker(nsRecord);
+		TestParser::ViewNamespaceRecord(nsRecord);
+		// Compiler compiler;
+		// CompiledProgram program = compiler.Compile(nsRecord);
+		// ByteCode code = program.EmitByteCode();
+		// for (auto& b : code)
+		// {
+		// 	wcout << b << L"," << endl;
+		// }
+	}
+	catch (SyntaxException& ex)
+	{
+		TestParser::ShowSyntaxError(ex);
+	}
+	catch (TypeException& ex)
+	{
+		TestTypeChecker::ShowTypeError(ex);
 	}
 	wcout << endl << endl;
 }

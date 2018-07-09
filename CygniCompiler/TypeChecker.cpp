@@ -4,36 +4,18 @@
 using std::any_cast;
 using std::endl;
 using std::wcout;
-// TypeChecker::TypeChecker(NamespaceList& namespaceList)
-// 	: namespaceList{namespaceList}
-// 	, currentNamespace{namespaceList.list.front()}
-// 	, global()
-// 	, current{&global}
-// {
-// 	for (Namespace& _namespace : namespaceList.list)
-// 	{
-// 		for (CodeFile& codeFile : _namespace.files)
-// 		{
-// 			for (ModuleExpPtr& module : codeFile.modules)
-// 			{
-// 				module->Accept(this);
-// 			}
-// 			for (ClassExpPtr& _class : codeFile.classes)
-// 			{
-// 				_class->Accept(this);
-// 			}
-// 		}
-// 	}
-// }
+
 TypeChecker::TypeChecker(NamespaceRecord& nsRecord)
 	: nsRecord{nsRecord}
 {
 	Scope globalScope(nullptr);
 	scope = &globalScope;
+	int32_t moduleCount = 0;
+	int32_t classCount = 0;
 	for (auto& pair : nsRecord.record)
 	{
 		auto& nsPtr = pair.second;
-		Collect(nsPtr);
+		Collect(nsPtr, moduleCount, classCount);
 	}
 	for (auto& pair : nsRecord.record)
 	{
@@ -46,7 +28,6 @@ void TypeChecker::Check(shared_ptr<Namespace> nsPtr)
 	Scope nextScope(scope);
 	Scope* parent = scope;
 	scope = &nextScope;
-	Collect(nsPtr);
 	for (auto& pair : nsPtr->modules)
 	{
 		Module& moduleInfo = pair.second;
@@ -68,9 +49,8 @@ void TypeChecker::CheckModule(Module& moduleInfo)
 	{
 		CheckField(field);
 	}
-	for (auto& p : moduleInfo.functions)
+	for (auto& function : moduleInfo.functions)
 	{
-		Function& function = p.second;
 		CheckFunction(function);
 	}
 	scope = parent;
@@ -84,9 +64,8 @@ void TypeChecker::CheckClass(Class& classInfo)
 	{
 		CheckField(field);
 	}
-	for (auto& p : classInfo.functions)
+	for (auto& function : classInfo.functions)
 	{
-		Function& function = p.second;
 		CheckFunction(function);
 	}
 	scope = parent;
@@ -125,34 +104,71 @@ void TypeChecker::CheckFunction(Function& function)
 	}
 	scope = parent;
 }
-void TypeChecker::Collect(shared_ptr<Namespace> nsPtr)
+void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t moduleCount,
+						  int32_t classCount)
 {
 	for (auto& pair : nsPtr->modules)
 	{
 		Module& moduleInfo = pair.second;
+		moduleInfo.index = moduleCount;
+		moduleCount++;
 		scope->Put(moduleInfo.type.name, moduleInfo);
-		for (auto& field : moduleInfo.fields)
+		int32_t fieldOffset = 0;
+		int32_t functionOffset = 0;
+		for (Field& field : moduleInfo.fields)
 		{
+			field.location = Location(moduleInfo.index, fieldOffset);
+			fieldOffset++;
 			scope->Put(field.name, field);
 		}
-		for (auto& p : moduleInfo.functions)
+		for (Function& function : moduleInfo.functions)
 		{
-			Function& function = p.second;
+			function.location = Location(moduleInfo.index, functionOffset);
+			functionOffset++;
 			scope->Put(function.name, function);
+			int32_t offset = 0;
+			for (Parameter& p : function.parameters)
+			{
+				p.location = Location(-1, offset);
+				offset++;
+			}
+			for (LocalVariable& v : function.variables)
+			{
+				v.location = Location(-1, offset);
+				offset++;
+			}
 		}
 	}
 	for (auto& pair : nsPtr->classes)
 	{
 		Class& classInfo = pair.second;
+		classInfo.index = classCount;
+		classCount++;
 		scope->Put(classInfo.type.name, classInfo);
-		for (auto& field : classInfo.fields)
+		int32_t fieldOffset = 0;
+		int32_t functionOffset = 0;
+		for (Field& field : classInfo.fields)
 		{
+			field.location = Location(classInfo.index, fieldOffset);
+			fieldOffset++;
 			scope->Put(field.name, field);
 		}
-		for (auto& p : classInfo.functions)
+		for (Function& function : classInfo.functions)
 		{
-			Function& function = p.second;
+			function.location = Location(classInfo.index, functionOffset);
+			functionOffset++;
 			scope->Put(function.name, function);
+			int32_t offset = 0;
+			for (Parameter& p : function.parameters)
+			{
+				p.location = Location(-1, offset);
+				offset++;
+			}
+			for (LocalVariable& v : function.variables)
+			{
+				v.location = Location(-1, offset);
+				offset++;
+			}
 		}
 	}
 }
@@ -399,7 +415,8 @@ void TypeChecker::Visit(AssignExpression* node)
 		any value = scope->Get(node->name);
 		if (value.type() == typeid(LocalVariable))
 		{
-			node->type = any_cast<LocalVariable>(value).type;
+			LocalVariable variable = any_cast<LocalVariable>(value);
+			node->type = variable.type;
 			if (node->type == node->value->type)
 			{
 			}
@@ -411,6 +428,24 @@ void TypeChecker::Visit(AssignExpression* node)
 										L" to '" + TypeToString(node->type) +
 										L"'");
 			}
+			node->location = variable.location;
+		}
+		else if (value.type() == typeid(Field))
+		{
+			Field field = any_cast<Field>(value);
+			node->type = field.type;
+			if (node->type == node->value->type)
+			{
+			}
+			else
+			{
+				throw TypeException(node->line, node->column,
+									L"Cannot implicitly convert type `" +
+										TypeToString(node->value->type) +
+										L" to '" + TypeToString(node->type) +
+										L"'");
+			}
+			node->location = field.location;
 		}
 		else
 		{
@@ -474,8 +509,8 @@ void TypeChecker::Visit(CallExpression* node)
 		vector<Type>& types = node->function->type.parameters;
 		if (types.size() == node->arguments.size() + 1)
 		{
-			int n = node->arguments.size();
-			for (int i = 0; i < n; i++)
+			int32_t n = node->arguments.size();
+			for (int32_t i = 0; i < n; i++)
 			{
 				if (types.at(i) != node->arguments.at(i)->type)
 				{
@@ -504,19 +539,27 @@ void TypeChecker::Visit(VariableExpression* node)
 		any value = scope->Get(node->name);
 		if (value.type() == typeid(LocalVariable))
 		{
-			node->type = any_cast<LocalVariable>(value).type;
+			LocalVariable variable = any_cast<LocalVariable>(value);
+			node->type = variable.type;
+			node->location = variable.location;
 		}
 		else if (value.type() == typeid(Parameter))
 		{
-			node->type = any_cast<Parameter>(value).type;
+			Parameter parameter = any_cast<Parameter>(value);
+			node->type = parameter.type;
+			node->location = parameter.location;
 		}
 		else if (value.type() == typeid(Field))
 		{
-			node->type = any_cast<Field>(value).type;
+			Field field = any_cast<Field>(value);
+			node->type = field.type;
+			node->location = field.location;
 		}
 		else if (value.type() == typeid(Function))
 		{
-			node->type = any_cast<Function>(value).functionType;
+			Function function = any_cast<Function>(value);
+			node->type = function.functionType;
+			node->location = function.location;
 		}
 		else if (value.type() == typeid(Module))
 		{
@@ -567,10 +610,10 @@ void TypeChecker::Visit(DotExpression* node)
 		{
 			node->type = moduleInfo.fieldMap[node->name].type;
 		}
-		else if (moduleInfo.functions.find(node->name) !=
-				 moduleInfo.functions.end())
+		else if (moduleInfo.functionMap.find(node->name) !=
+				 moduleInfo.functionMap.end())
 		{
-			node->type = moduleInfo.functions[node->name].functionType;
+			node->type = moduleInfo.functionMap[node->name].functionType;
 		}
 		else
 		{
@@ -584,10 +627,10 @@ void TypeChecker::Visit(DotExpression* node)
 		{
 			node->type = classInfo.fieldMap[node->name].type;
 		}
-		else if (classInfo.functions.find(node->name) !=
-				 classInfo.functions.end())
+		else if (classInfo.functionMap.find(node->name) !=
+				 classInfo.functionMap.end())
 		{
-			node->type = classInfo.functions[node->name].functionType;
+			node->type = classInfo.functionMap[node->name].functionType;
 		}
 		else
 		{

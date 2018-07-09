@@ -39,5 +39,10 @@ class FileNotFoundException : public Exception
 public:
 	FileNotFoundException();
 };
+class NotImplementedException : public Exception
+{
+public:
+	NotImplementedException();
+};
 
 #endif // EXCEPTION_HPP

@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp
+Compiler.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
+Exception.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.hpp
+Instruction.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
+Expression.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Expression.hpp
+Namespace.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.hpp
+
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.cpp
 Exception.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.hpp
@@ -21,6 +35,8 @@ Expression.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Expression.hpp
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Expression.hpp
+Location.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.hpp
 Type.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Type.hpp
 any
@@ -44,6 +60,8 @@ Expression.hpp
 Namespace.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.hpp
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.hpp
+
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Lexer.cpp
 Lexer.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Lexer.hpp
@@ -64,6 +82,14 @@ cstdint
 string
 -
 vector
+-
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.cpp
+Location.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.hpp
+cstdint
 -
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.cpp
@@ -132,23 +158,11 @@ string
 vector
 -
 
-/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.cpp
-SymbolTable.hpp
-/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.hpp
-
-/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.hpp
-any
--
-memory
--
-string
--
-unordered_map
--
-
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Test.cpp
 Test.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Test.hpp
+Compiler.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
 ExpressionViewer.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ExpressionViewer.hpp
 Lexer.hpp
@@ -221,8 +235,6 @@ Namespace.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.hpp
 Scope.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Scope.hpp
-SymbolTable.hpp
-/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.hpp
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/main.cpp
 Test.hpp

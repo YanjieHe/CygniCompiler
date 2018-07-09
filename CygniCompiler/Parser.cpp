@@ -116,7 +116,7 @@ Module Parser::DefModule(AccessModifier modifier)
 	moduleType.kind = TypeKind::Module;
 	Match(Tag::LeftBrace);
 	vector<Field> fields;
-	unordered_map<wstring, Function> functions;
+	vector<Function> functions;
 	while (Look().tag != Tag::RightBrace)
 	{
 		AccessModifier am = ParseAM(Look());
@@ -129,7 +129,7 @@ Module Parser::DefModule(AccessModifier modifier)
 		else if (Look().tag == Tag::DefFun)
 		{
 			Function function = DefFunction(am);
-			functions.insert({function.name, function});
+			functions.push_back(function);
 		}
 		else
 		{
@@ -148,7 +148,7 @@ Class Parser::DefClass(AccessModifier modifier)
 	classType.kind = TypeKind::Class;
 	Match(Tag::LeftBrace);
 	vector<Field> fields;
-	unordered_map<wstring, Function> methods;
+	vector<Function> methods;
 	unordered_map<wstring, Function> constructors;
 	while (Look().tag != Tag::RightBrace)
 	{
@@ -162,7 +162,7 @@ Class Parser::DefClass(AccessModifier modifier)
 		else if (Look().tag == Tag::DefFun)
 		{
 			Function method = DefFunction(am);
-			methods.insert({method.name, method});
+			methods.push_back(method);
 		}
 		else
 		{
@@ -263,8 +263,8 @@ ExpPtr Parser::Assign()
 	ExpPtr x = And();
 	if (x->kind == ExpressionKind::Variable && Look().tag == Tag::Assign)
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		VariableExpPtr variable = static_pointer_cast<VariableExpression>(x);
 		return Ast::Assign(line, column, variable->name, And());
@@ -279,8 +279,8 @@ ExpPtr Parser::Or()
 	ExpPtr x = And();
 	while (Look().tag == Tag::Or)
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		x = Ast::Or(line, column, x, And());
 	}
@@ -291,8 +291,8 @@ ExpPtr Parser::And()
 	ExpPtr x = Equality();
 	while (Look().tag == Tag::And)
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		x = Ast::And(line, column, x, Equality());
 	}
@@ -323,29 +323,29 @@ ExpPtr Parser::Relation()
 	{
 	case Tag::GreaterThan:
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::GreaterThan(line, column, x, Expr());
 	}
 	case Tag::LessThan:
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::LessThan(line, column, x, Expr());
 	}
 	case Tag::GreaterThanOrEqual:
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::GreaterThanOrEqual(line, column, x, Expr());
 	}
 	case Tag::LessThanOrEqual:
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::LessThanOrEqual(line, column, x, Expr());
 	}
@@ -398,22 +398,22 @@ ExpPtr Parser::Unary()
 {
 	if (Look().tag == Tag::Add)
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::UnaryPlus(line, column, Unary());
 	}
 	else if (Look().tag == Tag::Subtract)
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::UnaryMinus(line, column, Unary());
 	}
 	else if (Look().tag == Tag::Not)
 	{
-		int line = Look().line;
-		int column = Look().column;
+		int32_t line = Look().line;
+		int32_t column = Look().column;
 		Move();
 		return Ast::Not(line, column, Unary());
 	}

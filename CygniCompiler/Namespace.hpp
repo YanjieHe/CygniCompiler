@@ -14,6 +14,7 @@ public:
 	wstring name;
 	Type type;
 	ExpPtr value;
+	Location location;
 	LocalVariable();
 	LocalVariable(wstring name, Type type, ExpPtr value);
 };
@@ -24,6 +25,7 @@ public:
 	wstring name;
 	Type type;
 	ExpPtr value;
+	Location location;
 	Field();
 	Field(AccessModifier modifier, wstring name, Type type, ExpPtr value);
 };
@@ -32,6 +34,7 @@ class Parameter
 public:
 	wstring name;
 	Type type;
+	Location location;
 	Parameter();
 	Parameter(wstring name, Type type);
 };
@@ -45,6 +48,7 @@ public:
 	vector<ExpPtr> expressions;
 	Type returnType;
 	Type functionType;
+	Location location;
 	Function();
 	Function(AccessModifier modifier, wstring name,
 			 vector<Parameter> parameters, vector<LocalVariable> variables,
@@ -56,12 +60,14 @@ public:
 	AccessModifier modifier;
 	Type type;
 	vector<Field> fields;
+	vector<Function> functions;
 	unordered_map<wstring, Field> fieldMap;
-	unordered_map<wstring, Function> functions;
+	unordered_map<wstring, Function> functionMap;
+	int32_t index;
 	Function moduleInitializer;
 	Module();
 	Module(AccessModifier modifier, Type type, vector<Field> fields,
-		   unordered_map<wstring, Function> functions);
+		   vector<Function> functions);
 };
 class Class
 {
@@ -69,12 +75,14 @@ public:
 	AccessModifier modifier;
 	Type type;
 	vector<Field> fields;
+	vector<Function> functions;
 	unordered_map<wstring, Field> fieldMap;
-	unordered_map<wstring, Function> functions;
+	unordered_map<wstring, Function> functionMap;
 	unordered_map<wstring, Function> constructors;
+	int32_t index;
 	Class();
 	Class(AccessModifier modifier, Type type, vector<Field> fields,
-		  unordered_map<wstring, Function> functions,
+		  vector<Function> functions,
 		  unordered_map<wstring, Function> constructors);
 };
 class Namespace

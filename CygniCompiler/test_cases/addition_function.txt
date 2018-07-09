@@ -6,5 +6,5 @@ public module Program
     {
         var z: Int = x + y
         return z
-    }    
+    }
 }

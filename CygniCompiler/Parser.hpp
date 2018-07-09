@@ -63,7 +63,7 @@ inline Token& Parser::Look()
 }
 inline void Parser::Move()
 {
-	int n = tokens.size() - 1;
+	int32_t n = tokens.size() - 1;
 	if (tokenPointer < n)
 	{
 		tokenPointer++;

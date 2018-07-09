@@ -253,7 +253,7 @@ Token Lexer::Number()
 	const int32_t L = 4;
 	const int32_t F = 5;
 	const int32_t OTHER = 6;
-	int state = 1;
+	int32_t state = 1;
 	bool accept = false;
 	bool isInteger = true;
 	while (!reader.IsEof() && state != 0)

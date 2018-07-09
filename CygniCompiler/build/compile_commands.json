@@ -1,6 +1,11 @@
 [
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/Compiler.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
   "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/Exception.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.cpp"
 },
@@ -21,6 +26,11 @@
 },
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/Location.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Location.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
   "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/Namespace.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.cpp"
 },
@@ -38,11 +48,6 @@
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
   "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/SourceReader.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SourceReader.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SourceReader.cpp"
-},
-{
-  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
-  "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.cpp",
-  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SymbolTable.cpp"
 },
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",

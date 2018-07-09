@@ -18,8 +18,10 @@ int main()
 	// TestType::TestBasicTypes();
 
 	// TestTypeChecker::TestMultiplication();
-	TestTypeChecker::TestCircleArea();
+	// TestTypeChecker::TestCircleArea();
 	// TestTypeChecker::TestSummation();
 
+	// TestCompiler::TestAddTwoNumbers();
+	TestCompiler::TestMax();
 	return 0;
 }

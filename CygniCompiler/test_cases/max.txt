@@ -1,0 +1,22 @@
+namespace ConsoleApplication
+
+public module Program
+{
+    public fun Max(x: Int, y: Int): Int
+    {
+        if x > y
+        {
+            return x
+        }
+        else
+        {
+            return y
+        }
+    }
+    public fun Main(): Int
+    {
+        var x: Int = 10
+        var y: Int = 20
+        return Max(x, y)
+    }
+}

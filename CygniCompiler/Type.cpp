@@ -148,7 +148,7 @@ wstring TypeToString(Type& type)
 		{
 			vec.push_back(c);
 		}
-		for (int i = 1, n = type.parameters.size(); i < n; i++)
+		for (int32_t i = 1, n = type.parameters.size(); i < n; i++)
 		{
 			vec.push_back(L',');
 			vec.push_back(L' ');
@@ -169,8 +169,8 @@ bool operator==(Type& left, Type& right)
 		{
 			if (left.parameters.size() == right.parameters.size())
 			{
-				int n = left.parameters.size();
-				for (int i = 0; i < n; i++)
+				int32_t n = left.parameters.size();
+				for (int32_t i = 0; i < n; i++)
 				{
 					if (left.parameters.at(i) != right.parameters.at(i))
 					{

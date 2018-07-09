@@ -44,3 +44,7 @@ FileNotFoundException::FileNotFoundException()
 	: Exception(L"Unable to find the specified file")
 {
 }
+NotImplementedException::NotImplementedException()
+	: Exception(L"The method or operation is not implemented")
+{
+}

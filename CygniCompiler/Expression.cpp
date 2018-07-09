@@ -64,45 +64,6 @@ IfThenElseExpression::IfThenElseExpression(int32_t line, int32_t column,
 {
 }
 
-// DefVarExpression::DefVarExpression(int32_t line, int32_t column,
-// 								   AccessModifier modifier, wstring name,
-// 								   Type type, ExpPtr value)
-// 	: Expression(line, column, ExpressionKind::DefVar)
-// 	, modifier{modifier}
-// 	, name{name}
-// 	, value{value}
-// {
-// 	this->type = type;
-// }
-
-// DefFunExpression::DefFunExpression(int32_t line, int32_t column,
-// 								   AccessModifier modifier, wstring name,
-// 								   vector<ParameterExpPtr> parameters,
-// 								   ExpPtr body, Type returnType)
-// 	: Expression(line, column, ExpressionKind::DefFun)
-// 	, modifier{modifier}
-// 	, name{name}
-// 	, parameters{parameters}
-// 	, body{body}
-// 	, returnType{returnType}
-// {
-// 	vector<Type> types;
-// 	types.reserve(parameters.size());
-// 	for (ParameterExpPtr& p : parameters)
-// 	{
-// 		types.push_back(p->type);
-// 	}
-// 	types.push_back(returnType);
-// 	// this->type = Type(L"Function", types);
-// }
-// ParameterExpression::ParameterExpression(int32_t line, int32_t column,
-// 										 wstring name, Type type)
-// 	: Expression(line, column, ExpressionKind::Parameter)
-// 	, name{name}
-// {
-// 	this->type = type;
-// }
-
 CallExpression::CallExpression(int32_t line, int32_t column, ExpPtr function,
 							   vector<ExpPtr> arguments)
 	: Expression(line, column, ExpressionKind::Call)
@@ -129,28 +90,6 @@ WhileExpression::WhileExpression(int32_t line, int32_t column, ExpPtr condition,
 	, body{body}
 {
 }
-// ModuleExpression::ModuleExpression(int32_t line, int32_t column,
-// 								   AccessModifier modifier, wstring name,
-// 								   vector<DefVarExpPtr> variables,
-// 								   vector<DefFunExpPtr> functions)
-// 	: Expression(line, column, ExpressionKind::Module)
-// 	, modifier{modifier}
-// 	, name{name}
-// 	, variables{variables}
-// 	, functions{functions}
-// {
-// }
-// ClassExpression::ClassExpression(int32_t line, int32_t column,
-// 								 AccessModifier modifier, wstring name,
-// 								 vector<DefVarExpPtr> fields,
-// 								 vector<DefFunExpPtr> methods)
-// 	: Expression(line, column, ExpressionKind::Class)
-// 	, modifier{modifier}
-// 	, name{name}
-// 	, fields{fields}
-// 	, methods{methods}
-// {
-// }
 DotExpression::DotExpression(int32_t line, int32_t column, ExpPtr object,
 							 wstring name)
 	: Expression(line, column, ExpressionKind::Dot)
@@ -186,18 +125,6 @@ void IfThenElseExpression::Accept(Expression::Visitor* visitor)
 {
 	visitor->Visit(this);
 }
-// void DefVarExpression::Accept(Expression::Visitor* visitor)
-// {
-// 	visitor->Visit(this);
-// }
-// void DefFunExpression::Accept(Expression::Visitor* visitor)
-// {
-// 	visitor->Visit(this);
-// }
-// void ParameterExpression::Accept(Expression::Visitor* visitor)
-// {
-// 	visitor->Visit(this);
-// }
 void CallExpression::Accept(Expression::Visitor* visitor)
 {
 	visitor->Visit(this);
@@ -214,14 +141,6 @@ void WhileExpression::Accept(Expression::Visitor* visitor)
 {
 	visitor->Visit(this);
 }
-// void ModuleExpression::Accept(Expression::Visitor* visitor)
-// {
-// 	visitor->Visit(this);
-// }
-// void ClassExpression::Accept(Expression::Visitor* visitor)
-// {
-// 	visitor->Visit(this);
-// }
 void DotExpression::Accept(Expression::Visitor* visitor)
 {
 	visitor->Visit(this);
@@ -313,15 +232,15 @@ ConstantExpPtr Ast::Constant(int32_t line, int32_t column, std::any value)
 {
 	return make_shared<ConstantExpression>(line, column, value);
 }
-// DefVarExpPtr Ast::DefVar(int32_t line, int32_t column, AccessModifier modifier,
-// 						 wstring name, Type type, ExpPtr value)
+// DefVarExpPtr Ast::DefVar(int32_t line, int32_t column, AccessModifier
+// modifier, 						 wstring name, Type type, ExpPtr value)
 // {
 // 	return make_shared<DefVarExpression>(line, column, modifier, name, type,
 // 										 value);
 // }
-// DefFunExpPtr Ast::DefFun(int32_t line, int32_t column, AccessModifier modifier,
-// 						 wstring name, vector<ParameterExpPtr> parameters,
-// 						 ExpPtr body, Type returnType)
+// DefFunExpPtr Ast::DefFun(int32_t line, int32_t column, AccessModifier
+// modifier, 						 wstring name, vector<ParameterExpPtr>
+// parameters, ExpPtr body, Type returnType)
 // {
 // 	return make_shared<DefFunExpression>(line, column, modifier, name,
 // 										 parameters, body, returnType);
@@ -355,11 +274,6 @@ IfThenElseExpPtr Ast::IfThenElse(int32_t line, int32_t column, ExpPtr condition,
 	return make_shared<IfThenElseExpression>(line, column, condition, ifTrue,
 											 ifFalse);
 }
-// ParameterExpPtr Ast::Parameter(int32_t line, int32_t column, wstring name,
-// 							   Type type)
-// {
-// 	return make_shared<ParameterExpression>(line, column, name, type);
-// }
 ReturnExpPtr Ast::Return(int32_t line, int32_t column, ExpPtr value)
 {
 	return make_shared<ReturnExpression>(line, column, value);
@@ -369,20 +283,6 @@ WhileExpPtr Ast::While(int32_t line, int32_t column, ExpPtr condition,
 {
 	return make_shared<WhileExpression>(line, column, condition, body);
 }
-// ModuleExpPtr Ast::Module(int32_t line, int32_t column, AccessModifier
-// modifier, 						 wstring name, vector<DefVarExpPtr> variables, 						 vector<DefFunExpPtr>
-// functions)
-// {
-// 	return make_shared<ModuleExpression>(line, column, modifier, name,
-// 										 variables, functions);
-// }
-// ClassExpPtr Ast::Class(int32_t line, int32_t column, AccessModifier modifier,
-// 					   wstring name, vector<DefVarExpPtr> fields,
-// 					   vector<DefFunExpPtr> methods)
-// {
-// 	return make_shared<ClassExpression>(line, column, modifier, name, fields,
-// 										methods);
-// }
 DotExpPtr Ast::Dot(int32_t line, int32_t column, ExpPtr object, wstring name)
 {
 	return make_shared<DotExpression>(line, column, object, name);
@@ -425,16 +325,10 @@ wstring ExpressionKindToString(ExpressionKind kind)
 		return L"Or";
 	case ExpressionKind::Not:
 		return L"Not";
-	case ExpressionKind::DefVar:
-		return L"DefVar";
-	case ExpressionKind::DefFun:
-		return L"DefFun";
 	case ExpressionKind::IfThen:
 		return L"IfThen";
 	case ExpressionKind::IfThenElse:
 		return L"IfThenElse";
-	case ExpressionKind::Parameter:
-		return L"Parameter";
 	case ExpressionKind::Variable:
 		return L"Variable";
 	case ExpressionKind::Call:
@@ -447,10 +341,6 @@ wstring ExpressionKindToString(ExpressionKind kind)
 		return L"Return";
 	case ExpressionKind::While:
 		return L"While";
-	case ExpressionKind::Module:
-		return L"Module";
-	case ExpressionKind::Class:
-		return L"Class";
 	case ExpressionKind::Dot:
 		return L"Dot";
 	default:

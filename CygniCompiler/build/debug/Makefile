@@ -123,6 +123,33 @@ CygniCompiler/fast:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/build
 .PHONY : CygniCompiler/fast
 
+Compiler.o: Compiler.cpp.o
+
+.PHONY : Compiler.o
+
+# target to build an object file
+Compiler.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Compiler.cpp.o
+.PHONY : Compiler.cpp.o
+
+Compiler.i: Compiler.cpp.i
+
+.PHONY : Compiler.i
+
+# target to preprocess a source file
+Compiler.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Compiler.cpp.i
+.PHONY : Compiler.cpp.i
+
+Compiler.s: Compiler.cpp.s
+
+.PHONY : Compiler.s
+
+# target to generate assembly for a file
+Compiler.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Compiler.cpp.s
+.PHONY : Compiler.cpp.s
+
 Exception.o: Exception.cpp.o
 
 .PHONY : Exception.o
@@ -231,6 +258,33 @@ Lexer.cpp.s:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Lexer.cpp.s
 .PHONY : Lexer.cpp.s
 
+Location.o: Location.cpp.o
+
+.PHONY : Location.o
+
+# target to build an object file
+Location.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Location.cpp.o
+.PHONY : Location.cpp.o
+
+Location.i: Location.cpp.i
+
+.PHONY : Location.i
+
+# target to preprocess a source file
+Location.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Location.cpp.i
+.PHONY : Location.cpp.i
+
+Location.s: Location.cpp.s
+
+.PHONY : Location.s
+
+# target to generate assembly for a file
+Location.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Location.cpp.s
+.PHONY : Location.cpp.s
+
 Namespace.o: Namespace.cpp.o
 
 .PHONY : Namespace.o
@@ -338,33 +392,6 @@ SourceReader.s: SourceReader.cpp.s
 SourceReader.cpp.s:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/SourceReader.cpp.s
 .PHONY : SourceReader.cpp.s
-
-SymbolTable.o: SymbolTable.cpp.o
-
-.PHONY : SymbolTable.o
-
-# target to build an object file
-SymbolTable.cpp.o:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.o
-.PHONY : SymbolTable.cpp.o
-
-SymbolTable.i: SymbolTable.cpp.i
-
-.PHONY : SymbolTable.i
-
-# target to preprocess a source file
-SymbolTable.cpp.i:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.i
-.PHONY : SymbolTable.cpp.i
-
-SymbolTable.s: SymbolTable.cpp.s
-
-.PHONY : SymbolTable.s
-
-# target to generate assembly for a file
-SymbolTable.cpp.s:
-	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/SymbolTable.cpp.s
-.PHONY : SymbolTable.cpp.s
 
 Test.o: Test.cpp.o
 
@@ -510,6 +537,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CygniCompiler"
 	@echo "... edit_cache"
+	@echo "... Compiler.o"
+	@echo "... Compiler.i"
+	@echo "... Compiler.s"
 	@echo "... Exception.o"
 	@echo "... Exception.i"
 	@echo "... Exception.s"
@@ -522,6 +552,9 @@ help:
 	@echo "... Lexer.o"
 	@echo "... Lexer.i"
 	@echo "... Lexer.s"
+	@echo "... Location.o"
+	@echo "... Location.i"
+	@echo "... Location.s"
 	@echo "... Namespace.o"
 	@echo "... Namespace.i"
 	@echo "... Namespace.s"
@@ -534,9 +567,6 @@ help:
 	@echo "... SourceReader.o"
 	@echo "... SourceReader.i"
 	@echo "... SourceReader.s"
-	@echo "... SymbolTable.o"
-	@echo "... SymbolTable.i"
-	@echo "... SymbolTable.s"
 	@echo "... Test.o"
 	@echo "... Test.i"
 	@echo "... Test.s"
