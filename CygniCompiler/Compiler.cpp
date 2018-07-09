@@ -97,8 +97,9 @@ CompiledFunction Compiler::CompileFunction(Function& function)
 	int32_t stackSize = 0;
 	int32_t argsCount = function.parameters.size();
 	int32_t localsCount = function.variables.size();
-	return CompiledFunction(offset, stackSize, argsCount, localsCount,
-							constantsCount, constantPool, byteCode);
+	return CompiledFunction(function.name, offset, stackSize, argsCount,
+							localsCount, constantsCount, constantPool,
+							byteCode);
 }
 void Compiler::Visit(ConstantExpression* node)
 {
@@ -111,19 +112,19 @@ void Compiler::Visit(ConstantExpression* node)
 	}
 	else if (value.type() == typeid(int64_t))
 	{
-		constantPool.push_back(constant_int);
+		constantPool.push_back(constant_long);
 		ConvertLong(constantPool, any_cast<int64_t>(value));
 		byteCode.push_back(push_constant_long);
 	}
 	else if (value.type() == typeid(float))
 	{
-		constantPool.push_back(constant_int);
+		constantPool.push_back(constant_float);
 		ConvertFloat(constantPool, any_cast<float>(value));
 		byteCode.push_back(push_constant_float);
 	}
 	else if (value.type() == typeid(double))
 	{
-		constantPool.push_back(constant_int);
+		constantPool.push_back(constant_double);
 		ConvertDouble(constantPool, any_cast<double>(value));
 		byteCode.push_back(push_constant_double);
 	}
@@ -135,7 +136,7 @@ void Compiler::Visit(ConstantExpression* node)
 	}
 	else if (value.type() == typeid(wstring))
 	{
-		constantPool.push_back(constant_int);
+		constantPool.push_back(constant_string);
 		ConvertString(constantPool, any_cast<wstring>(value));
 		byteCode.push_back(push_constant_string);
 	}
@@ -218,7 +219,7 @@ void Compiler::Visit(BinaryExpression* node)
 {
 	node->left->Accept(this);
 	node->right->Accept(this);
-	if (node->type.IsInt())
+	if (node->left->type.IsInt() && node->right->type.IsInt())
 	{
 		if (node->kind == ExpressionKind::Add)
 		{
@@ -269,7 +270,7 @@ void Compiler::Visit(BinaryExpression* node)
 			throw wstring(L"wrong binary operation for int");
 		}
 	}
-	else if (node->type.IsLong())
+	else if (node->left->type.IsLong() && node->right->type.IsLong())
 	{
 		if (node->kind == ExpressionKind::Add)
 		{
@@ -320,7 +321,7 @@ void Compiler::Visit(BinaryExpression* node)
 			throw wstring(L"wrong binary operation for long");
 		}
 	}
-	else if (node->type.IsFloat())
+	else if (node->left->type.IsFloat() && node->right->type.IsFloat())
 	{
 		if (node->kind == ExpressionKind::Add)
 		{
@@ -367,7 +368,7 @@ void Compiler::Visit(BinaryExpression* node)
 			throw wstring(L"wrong binary operation for float");
 		}
 	}
-	else if (node->type.IsDouble())
+	else if (node->left->type.IsDouble() && node->right->type.IsDouble())
 	{
 		if (node->kind == ExpressionKind::Add)
 		{
@@ -414,7 +415,7 @@ void Compiler::Visit(BinaryExpression* node)
 			throw wstring(L"wrong binary operation for double");
 		}
 	}
-	else if (node->type.IsBoolean())
+	else if (node->left->type.IsBoolean() && node->right->type.IsBoolean())
 	{
 		if (node->kind == ExpressionKind::And)
 		{
@@ -512,10 +513,8 @@ void Compiler::Visit(CallExpression* node)
 	{
 		arg->Accept(this);
 	}
-	// node->function->Accept(this);
+	node->function->Accept(this);
 	byteCode.push_back(invoke);
-	// TO DO
-	throw NotImplementedException();
 }
 void Compiler::Visit(VariableExpression* node)
 {
@@ -548,7 +547,19 @@ void Compiler::Visit(VariableExpression* node)
 	}
 	else
 	{
-		throw NotImplementedException();
+		if (node->type.IsFunction())
+		{
+			byteCode.push_back(push_function);
+			constantPool.push_back(constant_int);
+			ConvertInt(constantPool, node->location.index);
+			byteCode.push_back(constantsCount);
+			constantsCount++;
+			byteCode.push_back(node->location.offset);
+		}
+		else
+		{
+			throw NotImplementedException();
+		}
 	}
 }
 void Compiler::Visit(ReturnExpression* node)
@@ -634,11 +645,12 @@ ByteCode CompiledClass::EmitByteCode()
 CompiledFunction::CompiledFunction()
 {
 }
-CompiledFunction::CompiledFunction(int32_t index, int32_t stackSize,
-								   int32_t argsCount, int32_t localsCount,
-								   int32_t constantCount, ByteCode constantPool,
-								   ByteCode byteCode)
-	: index{index}
+CompiledFunction::CompiledFunction(wstring name, int32_t index,
+								   int32_t stackSize, int32_t argsCount,
+								   int32_t localsCount, int32_t constantCount,
+								   ByteCode constantPool, ByteCode byteCode)
+	: name{name}
+	, index{index}
 	, stackSize{stackSize}
 	, argsCount{argsCount}
 	, localsCount{localsCount}
@@ -675,9 +687,30 @@ CompiledProgram::CompiledProgram(vector<CompiledModule> modules,
 	, classes{classes}
 {
 }
+void CompiledProgram::SearchMainFunction()
+{
+	for (auto& moduleInfo : modules)
+	{
+		for (auto& f : moduleInfo.functions)
+		{
+			if (f.name == L"Main")
+			{
+				mainModule = moduleInfo.index;
+				mainFunction = f.index;
+				return;
+			}
+		}
+	}
+	mainModule = -1;
+	mainFunction = -1;
+	throw wstring(L"missing main function");
+}
 ByteCode CompiledProgram::EmitByteCode()
 {
+	SearchMainFunction();
 	ByteCode code;
+	ConvertInt(code, mainModule);
+	code.push_back(mainFunction);
 	for (auto& module : modules)
 	{
 		code.push_back(0);

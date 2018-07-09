@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o"
+  "CMakeFiles/VirtualMachine.dir/Test.cpp.o"
   "CMakeFiles/VirtualMachine.dir/VM.cpp.o"
   "CMakeFiles/VirtualMachine.dir/Value.cpp.o"
   "CMakeFiles/VirtualMachine.dir/main.cpp.o"

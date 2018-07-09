@@ -70,9 +70,22 @@ CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.cpp -o CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.s
 
+CMakeFiles/VirtualMachine.dir/Test.cpp.o: CMakeFiles/VirtualMachine.dir/flags.make
+CMakeFiles/VirtualMachine.dir/Test.cpp.o: ../../Test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/VirtualMachine.dir/Test.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VirtualMachine.dir/Test.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp
+
+CMakeFiles/VirtualMachine.dir/Test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VirtualMachine.dir/Test.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp > CMakeFiles/VirtualMachine.dir/Test.cpp.i
+
+CMakeFiles/VirtualMachine.dir/Test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VirtualMachine.dir/Test.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp -o CMakeFiles/VirtualMachine.dir/Test.cpp.s
+
 CMakeFiles/VirtualMachine.dir/VM.cpp.o: CMakeFiles/VirtualMachine.dir/flags.make
 CMakeFiles/VirtualMachine.dir/VM.cpp.o: ../../VM.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/VirtualMachine.dir/VM.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/VirtualMachine.dir/VM.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VirtualMachine.dir/VM.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/VM.cpp
 
 CMakeFiles/VirtualMachine.dir/VM.cpp.i: cmake_force
@@ -85,7 +98,7 @@ CMakeFiles/VirtualMachine.dir/VM.cpp.s: cmake_force
 
 CMakeFiles/VirtualMachine.dir/Value.cpp.o: CMakeFiles/VirtualMachine.dir/flags.make
 CMakeFiles/VirtualMachine.dir/Value.cpp.o: ../../Value.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/VirtualMachine.dir/Value.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/VirtualMachine.dir/Value.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VirtualMachine.dir/Value.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Value.cpp
 
 CMakeFiles/VirtualMachine.dir/Value.cpp.i: cmake_force
@@ -98,7 +111,7 @@ CMakeFiles/VirtualMachine.dir/Value.cpp.s: cmake_force
 
 CMakeFiles/VirtualMachine.dir/main.cpp.o: CMakeFiles/VirtualMachine.dir/flags.make
 CMakeFiles/VirtualMachine.dir/main.cpp.o: ../../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/VirtualMachine.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/VirtualMachine.dir/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VirtualMachine.dir/main.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/main.cpp
 
 CMakeFiles/VirtualMachine.dir/main.cpp.i: cmake_force
@@ -112,6 +125,7 @@ CMakeFiles/VirtualMachine.dir/main.cpp.s: cmake_force
 # Object files for target VirtualMachine
 VirtualMachine_OBJECTS = \
 "CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o" \
+"CMakeFiles/VirtualMachine.dir/Test.cpp.o" \
 "CMakeFiles/VirtualMachine.dir/VM.cpp.o" \
 "CMakeFiles/VirtualMachine.dir/Value.cpp.o" \
 "CMakeFiles/VirtualMachine.dir/main.cpp.o"
@@ -120,12 +134,13 @@ VirtualMachine_OBJECTS = \
 VirtualMachine_EXTERNAL_OBJECTS =
 
 VirtualMachine: CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o
+VirtualMachine: CMakeFiles/VirtualMachine.dir/Test.cpp.o
 VirtualMachine: CMakeFiles/VirtualMachine.dir/VM.cpp.o
 VirtualMachine: CMakeFiles/VirtualMachine.dir/Value.cpp.o
 VirtualMachine: CMakeFiles/VirtualMachine.dir/main.cpp.o
 VirtualMachine: CMakeFiles/VirtualMachine.dir/build.make
 VirtualMachine: CMakeFiles/VirtualMachine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable VirtualMachine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable VirtualMachine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/VirtualMachine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -21,6 +21,7 @@ typedef union {
 	double double_v;
 	Object* object;
 } Value;
+
 typedef vector<Value> ConstantPool;
 
 class String : Object

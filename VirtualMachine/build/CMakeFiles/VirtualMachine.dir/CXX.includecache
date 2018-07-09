@@ -20,6 +20,14 @@ vector
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp
+Test.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
+VM.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/VM.hpp
+
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/VM.cpp
 VM.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/VM.hpp
@@ -47,8 +55,8 @@ vector
 -
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/main.cpp
-VM.hpp
-/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/VM.hpp
+Test.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
 iostream
 -
 

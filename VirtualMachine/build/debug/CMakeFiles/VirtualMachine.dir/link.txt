@@ -1,1 +1,1 @@
-/usr/bin/c++   -std=c++1y -Wall -Wextra -g  -rdynamic CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o CMakeFiles/VirtualMachine.dir/VM.cpp.o CMakeFiles/VirtualMachine.dir/Value.cpp.o CMakeFiles/VirtualMachine.dir/main.cpp.o  -o VirtualMachine 
+/usr/bin/c++   -std=c++1y -Wall -Wextra -g  -rdynamic CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o CMakeFiles/VirtualMachine.dir/Test.cpp.o CMakeFiles/VirtualMachine.dir/VM.cpp.o CMakeFiles/VirtualMachine.dir/Value.cpp.o CMakeFiles/VirtualMachine.dir/main.cpp.o  -o VirtualMachine 

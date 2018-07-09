@@ -310,13 +310,13 @@ void TestCompiler::TestMax()
 		nsRecord.AddFile(file);
 		TypeChecker checker(nsRecord);
 		TestParser::ViewNamespaceRecord(nsRecord);
-		// Compiler compiler;
-		// CompiledProgram program = compiler.Compile(nsRecord);
-		// ByteCode code = program.EmitByteCode();
-		// for (auto& b : code)
-		// {
-		// 	wcout << b << L"," << endl;
-		// }
+		Compiler compiler;
+		CompiledProgram program = compiler.Compile(nsRecord);
+		ByteCode code = program.EmitByteCode();
+		for (auto& b : code)
+		{
+			wcout << b << L"," << endl;
+		}
 	}
 	catch (SyntaxException& ex)
 	{

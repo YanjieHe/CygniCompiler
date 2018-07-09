@@ -62,6 +62,7 @@ public:
 class CompiledFunction
 {
 public:
+	wstring name;
 	int32_t index;
 	int32_t stackSize;
 	int32_t argsCount;
@@ -72,9 +73,10 @@ public:
 	ByteCode byteCode;
 
 	CompiledFunction();
-	CompiledFunction(int32_t index, int32_t stackSize, int32_t argsCount,
-					 int32_t localsCount, int32_t constantCount,
-					 ByteCode constantPool, ByteCode byteCode);
+	CompiledFunction(wstring name, int32_t index, int32_t stackSize,
+					 int32_t argsCount, int32_t localsCount,
+					 int32_t constantCount, ByteCode constantPool,
+					 ByteCode byteCode);
 	ByteCode EmitByteCode();
 };
 class CompiledProgram
@@ -82,10 +84,12 @@ class CompiledProgram
 public:
 	vector<CompiledModule> modules;
 	vector<CompiledClass> classes;
-
+	int32_t mainModule;
+	int32_t mainFunction;
 	CompiledProgram();
 	CompiledProgram(vector<CompiledModule> modules,
 					vector<CompiledClass> classes);
+	void SearchMainFunction();
 	ByteCode EmitByteCode();
 };
 

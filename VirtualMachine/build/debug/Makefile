@@ -150,6 +150,33 @@ ByteCodeReader.cpp.s:
 	$(MAKE) -f CMakeFiles/VirtualMachine.dir/build.make CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.s
 .PHONY : ByteCodeReader.cpp.s
 
+Test.o: Test.cpp.o
+
+.PHONY : Test.o
+
+# target to build an object file
+Test.cpp.o:
+	$(MAKE) -f CMakeFiles/VirtualMachine.dir/build.make CMakeFiles/VirtualMachine.dir/Test.cpp.o
+.PHONY : Test.cpp.o
+
+Test.i: Test.cpp.i
+
+.PHONY : Test.i
+
+# target to preprocess a source file
+Test.cpp.i:
+	$(MAKE) -f CMakeFiles/VirtualMachine.dir/build.make CMakeFiles/VirtualMachine.dir/Test.cpp.i
+.PHONY : Test.cpp.i
+
+Test.s: Test.cpp.s
+
+.PHONY : Test.s
+
+# target to generate assembly for a file
+Test.cpp.s:
+	$(MAKE) -f CMakeFiles/VirtualMachine.dir/build.make CMakeFiles/VirtualMachine.dir/Test.cpp.s
+.PHONY : Test.cpp.s
+
 VM.o: VM.cpp.o
 
 .PHONY : VM.o
@@ -243,6 +270,9 @@ help:
 	@echo "... ByteCodeReader.o"
 	@echo "... ByteCodeReader.i"
 	@echo "... ByteCodeReader.s"
+	@echo "... Test.o"
+	@echo "... Test.i"
+	@echo "... Test.s"
 	@echo "... VM.o"
 	@echo "... VM.i"
 	@echo "... VM.s"

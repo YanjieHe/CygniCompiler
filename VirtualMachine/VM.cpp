@@ -11,6 +11,8 @@ void VM::Load(ByteCodeReader& reader)
 {
 	modules.clear();
 	classes.clear();
+	int32_t mainModule = reader.ReadInt();
+	int32_t mainFunction = reader.Read();
 	while (!reader.IsEof())
 	{
 		int32_t b = reader.Read();
@@ -27,7 +29,7 @@ void VM::Load(ByteCodeReader& reader)
 			throw wstring(L"error2");
 		}
 	}
-	main = modules.front().functions.front();
+	main = modules.at(mainModule).functions.at(mainFunction);
 	code = &(main.code);
 	constantPool = &(main.constants);
 }
@@ -111,6 +113,10 @@ ConstantPool VM::LoadConstantPool(ByteCodeReader& reader, int32_t constantCount)
 }
 void VM::Run()
 {
+	wcout << endl;
+	wcout << L"**************** start vm ****************" << endl;
+	wcout << endl;
+
 	int32_t pc = 0;
 	int32_t fp = 0;
 	code = &(main.code);
@@ -119,11 +125,12 @@ void VM::Run()
 	stack[sp].int_v = 0;
 	sp++;
 	stack[sp].object = nullptr;
+	sp++;
+	stack[sp].int_v = 0;
 
 	function = &(main);
 
-	int32_t codeLength = code->size();
-	while (pc < codeLength)
+	while (pc < static_cast<int32_t>(code->size()))
 	{
 		int32_t opcode = (*code)[pc];
 		switch (opcode)
@@ -556,37 +563,96 @@ void VM::Run()
 		{
 			int32_t result = stack[sp].int_v;
 			int32_t offset = fp + function->args + function->locals;
-			int32_t callerAddress = stack[offset].int_v;
-			Function* caller = (Function*) stack[offset].object;
-			if (callerAddress)
+			pc = stack[offset].int_v;
+			wcout << L"load pc index = " << offset << endl;
+			function = (Function*) stack[offset + 1].object;
+			fp = stack[offset + 2].int_v;
+
+			wcout << L"previous function pointer = " << fp << endl;
+			if (function)
 			{
-				fp = callerAddress;
-				function = caller;
-				code = &(caller->code);
-				constantPool = &(caller->constants);
-				sp = offset + 2;
+				code = &(function->code);
+				constantPool = &(function->constants);
+				sp = fp + function->args + function->locals + 3;
+				sp++;
+				wcout << L"current result = " << result << endl;
+				stack[sp].int_v = result;
+				break;
 			}
 			else
 			{
-				wcout << result << endl;
+				wcout << L"result = " << result << endl;
 				return;
 			}
 			break;
 		}
 		case invoke:
 		{
+			wcout << L"load function at index " << sp << endl;
+			Function* f = (Function*) stack[sp].object;
+			wcout << L"function id = " << f->index << endl;
+			wcout << L"function args = " << f->args << endl;
+			pc++;
+
+			int32_t previousFunctionPointer = fp;
+			wcout << L"previous function pointer = " << fp << endl;
+			fp = sp - (f->args);
+			sp = fp + (f->args) + (f->locals);
+			stack[sp].int_v = pc;
+			wcout << L"store pc index = " << sp << endl;
+			sp++;
+			stack[sp].object = function;
+			sp++;
+			stack[sp].int_v = previousFunctionPointer;
+			sp++;
+
+			function = f;
+			code = &(function->code);
+			constantPool = &(function->constants);
+			pc = 0;
+			break;
+		}
+		case push_function:
+		{
 			int32_t cpIndex = (*code)[pc + 1];
-			int32_t funIndex = (*code)[pc + 2];
 			int32_t moduleIndex = constantPool->at(cpIndex).int_v;
+			int32_t funIndex = (*code)[pc + 2];
 			Function* f = &(modules.at(moduleIndex).functions.at(funIndex));
 			pc += 3;
-			int32_t callerAddress = fp;
-			sp++;
-			fp = sp;
-			sp = fp + f->args + f->locals;
-			stack[sp].int_v = callerAddress;
 			sp++;
 			stack[sp].object = f;
+			wcout << L"store function at index " << sp << endl;
+			break;
+		}
+		case jump_if_false:
+		{
+			int32_t target = GetUShort(code, pc);
+			pc += 3;
+			int32_t condition = stack[sp].int_v;
+			sp--;
+			if (!condition)
+			{
+				pc = target;
+			}
+			break;
+		}
+		case jump_if_true:
+		{
+			int32_t target = GetUShort(code, pc);
+			pc += 3;
+			int32_t condition = stack[sp].int_v;
+			sp--;
+			if (condition)
+			{
+				pc = target;
+			}
+			break;
+		}
+		case jump:
+		{
+			int32_t target = GetUShort(code, pc);
+			// pc += 3; This is not necessary
+			pc = target;
 			break;
 		}
 		default:
