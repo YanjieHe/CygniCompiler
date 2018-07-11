@@ -1,8 +1,10 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Compiler.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Exception.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Expression.cpp.o"
   "CMakeFiles/CygniCompiler.dir/ExpressionViewer.cpp.o"
+  "CMakeFiles/CygniCompiler.dir/Instruction.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Lexer.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Location.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Namespace.cpp.o"

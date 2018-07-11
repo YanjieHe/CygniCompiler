@@ -215,6 +215,7 @@ class DotExpression : public Expression
 public:
 	ExpPtr object;
 	wstring name;
+	any value;
 	DotExpression(int32_t line, int32_t column, ExpPtr object, wstring name);
 	void Accept(Visitor* visitor) override;
 };

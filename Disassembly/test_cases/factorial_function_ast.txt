@@ -1,0 +1,17 @@
+(fun Factorial (n Long)
+    (IfThenElse Unit
+               (Equal Boolean
+                     (Variable Long n) 
+                     (Constant Long 0))
+               (Block Unit
+                     (Return Long
+                            (Constant Long 1)))
+               (Block Unit
+                     (Return Long
+                            (Multiply Long
+                                     (Variable Long n)
+                                     (Call Long
+                                          (Variable Function[Long, Long] Factorial)
+                                          (Subtract Long
+                                                   (Variable Long n)
+                                                   (Constant Long 1))))))))

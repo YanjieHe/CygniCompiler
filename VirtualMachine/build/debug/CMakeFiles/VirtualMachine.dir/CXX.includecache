@@ -13,16 +13,30 @@ ByteCodeReader.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.hpp
 cstdint
 -
+fstream
+-
+iostream
+-
 string
 -
 vector
 -
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.cpp
+Instruction.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp
+string
+-
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp
 Test.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
+ByteCodeReader.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.hpp
+Instruction.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.hpp
 VM.hpp

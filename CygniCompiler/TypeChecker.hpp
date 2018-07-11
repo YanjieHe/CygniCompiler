@@ -17,8 +17,8 @@ public:
 	void CheckClass(Class& classInfo);
 	void CheckField(Field& field);
 	void CheckFunction(Function& function);
-	void Collect(shared_ptr<Namespace> nsPtr, int32_t moduleCount,
-				 int32_t classCount);
+	void Collect(shared_ptr<Namespace> nsPtr, int32_t& moduleCount,
+				 int32_t& classCount);
 
 	void Visit(ConstantExpression* node) override;
 	void Visit(UnaryExpression* node) override;

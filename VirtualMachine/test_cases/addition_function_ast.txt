@@ -1,0 +1,7 @@
+(fun Add (x Int y Int)
+    (var z
+        (Add Int
+            (Variable Int x)
+            (Variable Int y)))
+    (Return Int
+           (Variable Int z)))

@@ -1,0 +1,51 @@
+(fun Factorial (n Int)
+    (IfThenElse Unit
+               (Equal Boolean
+                     (Variable Int n)
+                     (Constant Int 0))
+               (Block Unit
+                     (Return Int
+                            (Constant Int 1)))
+               (Block Unit
+                     (Return Int
+                            (Multiply Int
+                                     (Variable Int n)
+                                     (Call Int
+                                          (Variable Function[Int, Int] Factorial)
+                                          (Subtract Int
+                                                   (Variable Int n)
+                                                   (Constant Int 1))))))))
+(fun Main ()
+    (var n
+        (Constant Int 20))
+    (Return Int
+           (Add Int
+               (Call Int
+                    (Dot
+                     (Variable FibonacciProgram FibonacciProgram) Fibonacci)
+                    (Variable Int n))
+               (Call Int
+                    (Variable Function[Int, Int] Factorial)
+                    (Variable Int n)))))
+
+(fun Fibonacci (n Int)
+    (IfThenElse Unit
+               (LessThanOrEqual Boolean
+                               (Variable Int n)
+                               (Constant Int 2))
+               (Block Unit
+                     (Return Int
+                            (Constant Int 1)))
+               (Block Unit
+                     (Return Int
+                            (Add Int
+                                (Call Int
+                                     (Variable Function[Int, Int] Fibonacci)
+                                     (Subtract Int
+                                              (Variable Int n)
+                                              (Constant Int 1)))
+                                (Call Int
+                                     (Variable Function[Int, Int] Fibonacci)
+                                     (Subtract Int
+                                              (Variable Int n)
+                                              (Constant Int 2))))))))

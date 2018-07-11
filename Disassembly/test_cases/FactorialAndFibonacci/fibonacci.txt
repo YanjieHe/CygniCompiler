@@ -1,0 +1,16 @@
+namespace ConsoleApplication
+
+public module FibonacciProgram
+{
+    public fun Fibonacci(n: Int): Int
+    {
+        if n <= 2
+        {
+            return 1
+        }
+        else
+        {
+            return Fibonacci(n - 1) + Fibonacci(n - 2)
+        }
+    }
+}

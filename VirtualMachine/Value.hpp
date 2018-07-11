@@ -77,4 +77,20 @@ public:
 	vector<Method> methods;
 	vector<Method> constructors;
 };
+
+class IntArray : public Object
+{
+public:
+	vector<int32_t> items;
+	IntArray();
+	~IntArray() override;
+};
+
+class ObjectArray : public Object
+{
+public:
+	vector<Object*> items;
+	ObjectArray();
+	~ObjectArray() override;
+};
 #endif // VALUE_HPP

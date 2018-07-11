@@ -1,7 +1,10 @@
 #include "Compiler.hpp"
 #include "Exception.hpp"
 #include "Instruction.hpp"
+#include <iostream>
 using std::any_cast;
+using std::endl;
+using std::wcout;
 Compiler::Compiler()
 {
 }
@@ -591,6 +594,28 @@ void Compiler::Visit(WhileExpression* node)
 }
 void Compiler::Visit(DotExpression* node)
 {
+	Type& objType = node->object->type;
+	if (objType.IsModule())
+	{
+		if (node->value.type() == typeid(Function))
+		{
+			Function f = any_cast<Function>(node->value);
+			byteCode.push_back(push_function);
+			constantPool.push_back(constant_int);
+			ConvertInt(constantPool, f.location.index);
+			byteCode.push_back(constantsCount);
+			constantsCount++;
+			byteCode.push_back(f.location.offset);
+		}
+		else
+		{
+			throw NotImplementedException();
+		}
+	}
+	else
+	{
+		throw NotImplementedException();
+	}
 }
 CompiledModule::CompiledModule()
 {

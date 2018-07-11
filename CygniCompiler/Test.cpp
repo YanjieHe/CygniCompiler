@@ -1,4 +1,5 @@
 #include "Test.hpp"
+#include "ByteCodeReader.hpp"
 #include "Compiler.hpp"
 #include "ExpressionViewer.hpp"
 #include "Lexer.hpp"
@@ -8,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 using std::any_cast;
 using std::endl;
 using std::string;
@@ -352,6 +354,79 @@ void TestCompiler::TestFactorial()
 	catch (SyntaxException& ex)
 	{
 		TestParser::ShowSyntaxError(ex);
+	}
+	catch (TypeException& ex)
+	{
+		TestTypeChecker::ShowTypeError(ex);
+	}
+	wcout << endl << endl;
+}
+void TestCompiler::TestFibonacci()
+{
+	wcout << L"Test Function: " << __FUNCTION__ << endl;
+	string path = "test_cases/fibonacci.txt";
+	Lexer lexer(path);
+	try
+	{
+		Parser parser(path, lexer.tokens);
+		NamespaceRecord nsRecord;
+		CodeFile file = parser.Program();
+		nsRecord.AddFile(file);
+		TypeChecker checker(nsRecord);
+		TestParser::ViewNamespaceRecord(nsRecord);
+		Compiler compiler;
+		CompiledProgram program = compiler.Compile(nsRecord);
+		ByteCode code = program.EmitByteCode();
+		for (auto& b : code)
+		{
+			wcout << b << L",";
+		}
+		wcout << endl;
+	}
+	catch (SyntaxException& ex)
+	{
+		TestParser::ShowSyntaxError(ex);
+	}
+	catch (TypeException& ex)
+	{
+		TestTypeChecker::ShowTypeError(ex);
+	}
+	wcout << endl << endl;
+}
+void TestCompiler::TestFactorialAndFibonacci()
+{
+	wcout << L"Test Function: " << __FUNCTION__ << endl;
+	vector<string> source = {"test_cases/FactorialAndFibonacci/fibonacci.txt",
+							 "test_cases/FactorialAndFibonacci/factorial.txt"};
+	NamespaceRecord nsRecord;
+	for (string path : source)
+	{
+		try
+		{
+			Lexer lexer(path);
+			Parser parser(path, lexer.tokens);
+			CodeFile file = parser.Program();
+			nsRecord.AddFile(file);
+		}
+		catch (SyntaxException& ex)
+		{
+			TestParser::ShowSyntaxError(ex);
+		}
+	}
+	try
+	{
+		TypeChecker checker(nsRecord);
+		TestParser::ViewNamespaceRecord(nsRecord);
+
+		Compiler compiler;
+		CompiledProgram program = compiler.Compile(nsRecord);
+		ByteCode code = program.EmitByteCode();
+		WriteBytes(
+			"test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin",
+			code);
+		wcout << L"byte code is written to "
+				 L"test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin"
+			  << endl;
 	}
 	catch (TypeException& ex)
 	{

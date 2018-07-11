@@ -1,5 +1,8 @@
 #include "Namespace.hpp"
+#include <iostream>
+using std::endl;
 using std::make_shared;
+using std::wcout;
 LocalVariable::LocalVariable()
 {
 }
@@ -60,13 +63,13 @@ Module::Module(AccessModifier modifier, Type type, vector<Field> fields,
 	, fields{fields}
 	, functions{functions}
 {
-	for (Field field : fields)
+	for (int32_t i = 0, n = fields.size(); i < n; i++)
 	{
-		fieldMap.insert({field.name, field});
+		fieldMap.insert({fields[i].name, i});
 	}
-	for (Function function : functions)
+	for (int32_t i = 0, n = functions.size(); i < n; i++)
 	{
-		functionMap.insert({function.name, function});
+		functionMap.insert({functions[i].name, i});
 	}
 }
 Class::Class()
@@ -81,13 +84,13 @@ Class::Class(AccessModifier modifier, Type type, vector<Field> fields,
 	, functions{functions}
 	, constructors{constructors}
 {
-	for (Field field : fields)
+	for (int32_t i = 0, n = fields.size(); i < n; i++)
 	{
-		fieldMap.insert({field.name, field});
+		fieldMap.insert({fields[i].name, i});
 	}
-	for (Function function : functions)
+	for (int32_t i = 0, n = functions.size(); i < n; i++)
 	{
-		functionMap.insert({function.name, function});
+		functionMap.insert({functions[i].name, i});
 	}
 }
 Namespace::Namespace()
@@ -130,9 +133,18 @@ void NamespaceRecord::AddFile(CodeFile& file)
 				nsPtr = subNsPtr;
 			}
 		}
-		nsPtr->modules = file.modules;
-		nsPtr->classes = file.classes;
-		nsPtr->uses = file.uses;
+		for (auto& p : file.modules)
+		{
+			nsPtr->modules.insert({p.first, p.second});
+		}
+		for (auto& p : file.classes)
+		{
+			nsPtr->classes.insert({p.first, p.second});
+		}
+		for (auto& p : file.uses)
+		{
+			nsPtr->uses.insert({p.first, p.second});
+		}
 	}
 	else
 	{

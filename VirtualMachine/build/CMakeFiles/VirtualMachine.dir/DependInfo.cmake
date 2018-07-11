@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o"
+  "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/CMakeFiles/VirtualMachine.dir/Instruction.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/CMakeFiles/VirtualMachine.dir/Test.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/VM.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/CMakeFiles/VirtualMachine.dir/VM.cpp.o"
   "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Value.cpp" "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build/CMakeFiles/VirtualMachine.dir/Value.cpp.o"

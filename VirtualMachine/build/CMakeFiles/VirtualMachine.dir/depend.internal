@@ -4,6 +4,9 @@
 CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o
  /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.cpp
  /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.hpp
+CMakeFiles/VirtualMachine.dir/Instruction.cpp.o
+ /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.cpp
+ /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp
 CMakeFiles/VirtualMachine.dir/Test.cpp.o
  /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/ByteCodeReader.hpp
  /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.hpp

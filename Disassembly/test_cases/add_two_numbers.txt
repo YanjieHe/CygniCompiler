@@ -1,0 +1,11 @@
+namespace ConsoleApplication
+
+public module Program
+{
+    public fun Main(): Int
+    {
+        var x: Int = 10
+        var y: Int = 20
+        return x + y
+    }
+}

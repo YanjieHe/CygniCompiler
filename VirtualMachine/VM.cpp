@@ -130,7 +130,8 @@ void VM::Run()
 
 	function = &(main);
 
-	while (pc < static_cast<int32_t>(code->size()))
+	int32_t codeLength = code->size();
+	while (pc < codeLength)
 	{
 		int32_t opcode = (*code)[pc];
 		switch (opcode)
@@ -563,24 +564,18 @@ void VM::Run()
 		case return_int:
 		{
 			int32_t result = stack[sp].int_v;
-			// ShowStack(stack);
-			// wcout << L"sp = " << sp << L" " << L"current result = " << result
-			// 	  << endl;
 			int32_t offset = fp + function->args + function->locals;
 			pc = stack[offset].int_v;
-			// wcout << L"load pc index = " << offset << endl;
 			function = (Function*) stack[offset + 1].object;
 			sp = fp;
 			fp = stack[offset + 2].int_v;
-			// wcout << L"restore fp = " << fp << endl;
-			// wcout << L"previous function pointer = " << fp << endl;
 			if (function)
 			{
 				code = &(function->code);
+				codeLength = code->size();
 				constantPool = &(function->constants);
-				// sp = fp + function->args + function->locals + 3;
-				// sp++;
 				stack[sp].int_v = result;
+				wcout << L"current result = " << result << endl;
 				break;
 			}
 			else
@@ -592,19 +587,13 @@ void VM::Run()
 		}
 		case invoke:
 		{
-			//	wcout << L"load function at index " << sp << endl;
 			Function* f = (Function*) stack[sp].object;
-			//	wcout << L"function id = " << f->index << endl;
-			//	wcout << L"function args = " << f->args << endl;
 			pc++;
 
 			int32_t previousFunctionPointer = fp;
-			//	wcout << L"previous function pointer = " << fp << endl;
 			fp = sp - (f->args);
-			// wcout << L"fp = " << fp << endl;
 			sp = fp + (f->args) + (f->locals);
 			stack[sp].int_v = pc;
-			// wcout << L"store pc index = " << sp << endl;
 			sp++;
 			stack[sp].object = function;
 			sp++;
@@ -613,6 +602,7 @@ void VM::Run()
 
 			function = f;
 			code = &(function->code);
+			codeLength = code->size();
 			constantPool = &(function->constants);
 			pc = 0;
 			break;

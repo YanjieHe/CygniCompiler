@@ -1,0 +1,22 @@
+namespace ConsoleApplication
+
+public module Program
+{
+    public fun Factorial(n: Int): Int
+    {
+        if n == 0
+        {
+            return 1
+        }
+        else
+        {
+            return n * Factorial(n - 1)
+        }
+    }
+
+    public fun Main(): Int
+    {
+        var n: Int = 20
+        return FibonacciProgram.Fibonacci(n) + Factorial(n)
+    }
+}

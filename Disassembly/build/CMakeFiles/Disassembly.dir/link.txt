@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++1y -Wall -Wextra  -O0 -Wall -g -ggdb  -rdynamic CMakeFiles/Disassembly.dir/ByteCodeReader.cpp.o CMakeFiles/Disassembly.dir/ByteCodeViewer.cpp.o CMakeFiles/Disassembly.dir/Instruction.cpp.o CMakeFiles/Disassembly.dir/Test.cpp.o CMakeFiles/Disassembly.dir/main.cpp.o  -o Disassembly 

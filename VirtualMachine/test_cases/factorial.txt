@@ -1,0 +1,22 @@
+namespace ConsoleApplication
+
+public module Program
+{
+    public fun Main(): Int
+    {
+        var result: Int = Factorial(5)
+        return result
+    }
+
+    public fun Factorial(n: Int): Int
+    {
+        if n == 0
+        {
+            return 1
+        }
+        else
+        {
+            return n * Factorial(n - 1)
+        }
+    }
+}

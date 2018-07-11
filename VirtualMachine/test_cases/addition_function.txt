@@ -1,0 +1,10 @@
+namespace ConsoleApplication
+
+public module Program
+{
+    public fun Add(x: Int, y: Int): Int
+    {
+        var z: Int = x + y
+        return z
+    }
+}

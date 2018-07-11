@@ -1,5 +1,6 @@
 #ifndef INSTRUCTION_HPP
 #define INSTRUCTION_HPP
+#include <string>
 
 typedef enum
 {
@@ -124,4 +125,6 @@ typedef enum
 	constant_char,
 	constant_string
 } ConstantPoolKind;
+
+std::wstring InstructionToString(int instruction);
 #endif // INSTRUCTION_HPP

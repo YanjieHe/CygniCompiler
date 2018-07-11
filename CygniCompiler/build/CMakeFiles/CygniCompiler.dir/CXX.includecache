@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.cpp
+ByteCodeReader.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.hpp
+cstdint
+-
+fstream
+-
+iostream
+-
+string
+-
+vector
+-
+
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp
 Compiler.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
@@ -13,6 +29,8 @@ Exception.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.hpp
 Instruction.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.hpp
+iostream
+-
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
 Expression.hpp
@@ -60,7 +78,13 @@ Expression.hpp
 Namespace.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.hpp
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.cpp
+Instruction.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.hpp
+string
+-
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Lexer.cpp
 Lexer.hpp
@@ -95,6 +119,8 @@ cstdint
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.cpp
 Namespace.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.hpp
+iostream
+-
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Namespace.hpp
 Expression.hpp
@@ -161,6 +187,8 @@ vector
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Test.cpp
 Test.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Test.hpp
+ByteCodeReader.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.hpp
 Compiler.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
 ExpressionViewer.hpp

@@ -44,5 +44,7 @@ namespace TestCompiler
 void TestAddTwoNumbers();
 void TestMax();
 void TestFactorial();
+void TestFibonacci();
+void TestFactorialAndFibonacci();
 };	 // namespace TestCompiler
 #endif // TEST_HPP

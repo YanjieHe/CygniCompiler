@@ -4,7 +4,11 @@
 CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o: ../../ByteCodeReader.cpp
 CMakeFiles/VirtualMachine.dir/ByteCodeReader.cpp.o: ../../ByteCodeReader.hpp
 
+CMakeFiles/VirtualMachine.dir/Instruction.cpp.o: ../../Instruction.cpp
+CMakeFiles/VirtualMachine.dir/Instruction.cpp.o: ../../Instruction.hpp
+
 CMakeFiles/VirtualMachine.dir/Test.cpp.o: ../../ByteCodeReader.hpp
+CMakeFiles/VirtualMachine.dir/Test.cpp.o: ../../Instruction.hpp
 CMakeFiles/VirtualMachine.dir/Test.cpp.o: ../../Test.cpp
 CMakeFiles/VirtualMachine.dir/Test.cpp.o: ../../Test.hpp
 CMakeFiles/VirtualMachine.dir/Test.cpp.o: ../../VM.hpp

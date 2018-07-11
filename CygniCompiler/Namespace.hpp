@@ -61,8 +61,8 @@ public:
 	Type type;
 	vector<Field> fields;
 	vector<Function> functions;
-	unordered_map<wstring, Field> fieldMap;
-	unordered_map<wstring, Function> functionMap;
+	unordered_map<wstring, int32_t> fieldMap;
+	unordered_map<wstring, int32_t> functionMap;
 	int32_t index;
 	Function moduleInitializer;
 	Module();
@@ -76,8 +76,8 @@ public:
 	Type type;
 	vector<Field> fields;
 	vector<Function> functions;
-	unordered_map<wstring, Field> fieldMap;
-	unordered_map<wstring, Function> functionMap;
+	unordered_map<wstring, int32_t> fieldMap;
+	unordered_map<wstring, int32_t> functionMap;
 	unordered_map<wstring, Function> constructors;
 	int32_t index;
 	Class();

@@ -123,6 +123,33 @@ CygniCompiler/fast:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/build
 .PHONY : CygniCompiler/fast
 
+ByteCodeReader.o: ByteCodeReader.cpp.o
+
+.PHONY : ByteCodeReader.o
+
+# target to build an object file
+ByteCodeReader.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.o
+.PHONY : ByteCodeReader.cpp.o
+
+ByteCodeReader.i: ByteCodeReader.cpp.i
+
+.PHONY : ByteCodeReader.i
+
+# target to preprocess a source file
+ByteCodeReader.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.i
+.PHONY : ByteCodeReader.cpp.i
+
+ByteCodeReader.s: ByteCodeReader.cpp.s
+
+.PHONY : ByteCodeReader.s
+
+# target to generate assembly for a file
+ByteCodeReader.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.s
+.PHONY : ByteCodeReader.cpp.s
+
 Compiler.o: Compiler.cpp.o
 
 .PHONY : Compiler.o
@@ -230,6 +257,33 @@ ExpressionViewer.s: ExpressionViewer.cpp.s
 ExpressionViewer.cpp.s:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/ExpressionViewer.cpp.s
 .PHONY : ExpressionViewer.cpp.s
+
+Instruction.o: Instruction.cpp.o
+
+.PHONY : Instruction.o
+
+# target to build an object file
+Instruction.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Instruction.cpp.o
+.PHONY : Instruction.cpp.o
+
+Instruction.i: Instruction.cpp.i
+
+.PHONY : Instruction.i
+
+# target to preprocess a source file
+Instruction.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Instruction.cpp.i
+.PHONY : Instruction.cpp.i
+
+Instruction.s: Instruction.cpp.s
+
+.PHONY : Instruction.s
+
+# target to generate assembly for a file
+Instruction.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/Instruction.cpp.s
+.PHONY : Instruction.cpp.s
 
 Lexer.o: Lexer.cpp.o
 
@@ -537,6 +591,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CygniCompiler"
 	@echo "... edit_cache"
+	@echo "... ByteCodeReader.o"
+	@echo "... ByteCodeReader.i"
+	@echo "... ByteCodeReader.s"
 	@echo "... Compiler.o"
 	@echo "... Compiler.i"
 	@echo "... Compiler.s"
@@ -549,6 +606,9 @@ help:
 	@echo "... ExpressionViewer.o"
 	@echo "... ExpressionViewer.i"
 	@echo "... ExpressionViewer.s"
+	@echo "... Instruction.o"
+	@echo "... Instruction.i"
+	@echo "... Instruction.s"
 	@echo "... Lexer.o"
 	@echo "... Lexer.i"
 	@echo "... Lexer.s"

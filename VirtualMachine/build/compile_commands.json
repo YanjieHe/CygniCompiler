@@ -6,6 +6,11 @@
 },
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build",
+  "command": "/usr/bin/c++     -std=c++1y -Wall -Wextra   -o CMakeFiles/VirtualMachine.dir/Instruction.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Instruction.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/build",
   "command": "/usr/bin/c++     -std=c++1y -Wall -Wextra   -o CMakeFiles/VirtualMachine.dir/Test.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/VirtualMachine/Test.cpp"
 },

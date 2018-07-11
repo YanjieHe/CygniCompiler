@@ -1,6 +1,11 @@
 [
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
   "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/Compiler.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp"
 },
@@ -18,6 +23,11 @@
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
   "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/ExpressionViewer.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ExpressionViewer.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ExpressionViewer.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/Instruction.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Instruction.cpp"
 },
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",

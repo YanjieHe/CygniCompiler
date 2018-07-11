@@ -3,6 +3,8 @@
 int main()
 {
 	std::locale::global(std::locale(""));
-	TestFactorial();
+	// TestFactorial();
+	// TestFibonacci();
+	TestFactorialAndFibonacci();
 	return 0;
 }

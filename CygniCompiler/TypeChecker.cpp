@@ -104,15 +104,14 @@ void TypeChecker::CheckFunction(Function& function)
 	}
 	scope = parent;
 }
-void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t moduleCount,
-						  int32_t classCount)
+void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t& moduleCount,
+						  int32_t& classCount)
 {
 	for (auto& pair : nsPtr->modules)
 	{
 		Module& moduleInfo = pair.second;
 		moduleInfo.index = moduleCount;
 		moduleCount++;
-		scope->Put(moduleInfo.type.name, moduleInfo);
 		int32_t fieldOffset = 0;
 		int32_t functionOffset = 0;
 		for (Field& field : moduleInfo.fields)
@@ -138,13 +137,13 @@ void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t moduleCount,
 				offset++;
 			}
 		}
+		scope->Put(moduleInfo.type.name, moduleInfo);
 	}
 	for (auto& pair : nsPtr->classes)
 	{
 		Class& classInfo = pair.second;
 		classInfo.index = classCount;
 		classCount++;
-		scope->Put(classInfo.type.name, classInfo);
 		int32_t fieldOffset = 0;
 		int32_t functionOffset = 0;
 		for (Field& field : classInfo.fields)
@@ -170,6 +169,7 @@ void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t moduleCount,
 				offset++;
 			}
 		}
+		scope->Put(classInfo.type.name, classInfo);
 	}
 }
 void TypeChecker::Visit(ConstantExpression* node)
@@ -608,12 +608,17 @@ void TypeChecker::Visit(DotExpression* node)
 		Module moduleInfo = any_cast<Module>(scope->Get(objType.name));
 		if (moduleInfo.fieldMap.find(node->name) != moduleInfo.fieldMap.end())
 		{
-			node->type = moduleInfo.fieldMap[node->name].type;
+			Field field = moduleInfo.fields[moduleInfo.fieldMap[node->name]];
+			node->type = field.type;
+			node->value = field;
 		}
 		else if (moduleInfo.functionMap.find(node->name) !=
 				 moduleInfo.functionMap.end())
 		{
-			node->type = moduleInfo.functionMap[node->name].functionType;
+			Function f =
+				moduleInfo.functions[moduleInfo.functionMap[node->name]];
+			node->type = f.functionType;
+			node->value = f;
 		}
 		else
 		{
@@ -625,12 +630,15 @@ void TypeChecker::Visit(DotExpression* node)
 		Class classInfo = any_cast<Class>(scope->Get(objType.name));
 		if (classInfo.fieldMap.find(node->name) != classInfo.fieldMap.end())
 		{
-			node->type = classInfo.fieldMap[node->name].type;
+			Field field = classInfo.fields[classInfo.fieldMap[node->name]];
+			node->type = field.type;
 		}
 		else if (classInfo.functionMap.find(node->name) !=
 				 classInfo.functionMap.end())
 		{
-			node->type = classInfo.functionMap[node->name].functionType;
+			Function method =
+				classInfo.functions[classInfo.functionMap[node->name]];
+			node->type = method.functionType;
 		}
 		else
 		{

@@ -22,6 +22,8 @@ int main()
 	// TestTypeChecker::TestSummation();
 
 	// TestCompiler::TestAddTwoNumbers();
-	TestCompiler::TestFactorial();
+	// TestCompiler::TestFactorial();
+	// TestCompiler::TestFibonacci();
+	TestCompiler::TestFactorialAndFibonacci();
 	return 0;
 }

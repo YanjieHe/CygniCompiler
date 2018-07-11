@@ -1,0 +1,11 @@
+fun Sum(n: Int): Int
+{
+    var sum: Int = 0
+    var i: Int = 1
+    while i <= n
+    {
+        sum = sum + i
+        i = i + 1
+    }
+    return sum
+}

@@ -1,0 +1,5 @@
+fun Multiply(x: Int, y: Int): Int
+{
+    var result: Int = x * y
+    return result
+}
