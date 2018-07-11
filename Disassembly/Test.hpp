@@ -9,4 +9,5 @@ using std::vector;
 using std::wcout;
 void TestReadAndWriteBinaryFile();
 void TestFactorialAndFibonacci();
+void TestSummation();
 #endif // TEST_HPP

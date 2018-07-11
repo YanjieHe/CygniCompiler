@@ -5,6 +5,7 @@ int main()
 	std::locale::global(std::locale(""));
 	// TestFactorial();
 	// TestFibonacci();
-	TestFactorialAndFibonacci();
+	// TestFactorialAndFibonacci();
+	TestSummation();
 	return 0;
 }

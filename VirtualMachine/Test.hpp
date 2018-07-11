@@ -7,4 +7,5 @@ void TestMax();
 void TestFactorial();
 void TestFibonacci();
 void TestFactorialAndFibonacci();
+void TestSummation();
 #endif // TEST_HPP

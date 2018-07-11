@@ -502,13 +502,13 @@ void Compiler::Visit(IfThenElseExpression* node)
 	int32_t index2 = byteCode.size();
 	ConvertUShort(byteCode, 0);
 
-	int32_t target = byteCode.size();
-	byteCode.at(index1) = target % 256;
-	byteCode.at(index1 + 1) = target / 256;
+	int32_t target1 = byteCode.size();
+	byteCode.at(index1) = target1 % 256;
+	byteCode.at(index1 + 1) = target1 / 256;
 	node->ifFalse->Accept(this);
 	int32_t target2 = byteCode.size();
 	byteCode.at(index2) = target2 % 256;
-	byteCode.at(index2 + 1) = target / 256;
+	byteCode.at(index2 + 1) = target2 / 256;
 }
 void Compiler::Visit(CallExpression* node)
 {
@@ -591,6 +591,17 @@ void Compiler::Visit(ReturnExpression* node)
 }
 void Compiler::Visit(WhileExpression* node)
 {
+	int32_t index1 = byteCode.size();
+	node->condition->Accept(this);
+	byteCode.push_back(jump_if_false);
+	int32_t index2 = byteCode.size();
+	ConvertUShort(byteCode, 0);
+	node->body->Accept(this);
+	byteCode.push_back(jump);
+	ConvertUShort(byteCode, index1);
+	int32_t target = byteCode.size();
+	byteCode.at(index2) = target % 256;
+	byteCode.at(index2 + 1) = target / 256;
 }
 void Compiler::Visit(DotExpression* node)
 {

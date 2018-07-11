@@ -1,0 +1,21 @@
+namespace NumericalCalculation 
+
+public module Program
+{
+    public fun Sum(n: Int): Int
+    {
+        var i: Int = 1
+        var sum: Int = 0
+
+        while i <= n
+        {
+            sum = sum + i
+            i = i + 1
+        }
+        return sum
+    }
+    public fun Main(): Int
+    {
+        return Sum(100)
+    }
+}

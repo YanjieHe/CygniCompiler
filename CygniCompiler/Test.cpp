@@ -272,132 +272,42 @@ void TestCompiler::TestAddTwoNumbers()
 {
 	wcout << L"Test Function: " << __FUNCTION__ << endl;
 	string path = "test_cases/add_two_numbers.txt";
-	Lexer lexer(path);
-	try
-	{
-		Parser parser(path, lexer.tokens);
-		NamespaceRecord nsRecord;
-		CodeFile file = parser.Program();
-		nsRecord.AddFile(file);
-		TypeChecker checker(nsRecord);
-		TestParser::ViewNamespaceRecord(nsRecord);
-		Compiler compiler;
-		CompiledProgram program = compiler.Compile(nsRecord);
-		ByteCode code = program.EmitByteCode();
-		for (auto& b : code)
-		{
-			wcout << b << L"," << endl;
-		}
-	}
-	catch (SyntaxException& ex)
-	{
-		TestParser::ShowSyntaxError(ex);
-	}
-	catch (TypeException& ex)
-	{
-		TestTypeChecker::ShowTypeError(ex);
-	}
-	wcout << endl << endl;
+
+	CompileProgram({path}, "test_cases/add_two_numbers.txt");
 }
 void TestCompiler::TestMax()
 {
 	wcout << L"Test Function: " << __FUNCTION__ << endl;
 	string path = "test_cases/max.txt";
-	Lexer lexer(path);
-	try
-	{
-		Parser parser(path, lexer.tokens);
-		NamespaceRecord nsRecord;
-		CodeFile file = parser.Program();
-		nsRecord.AddFile(file);
-		TypeChecker checker(nsRecord);
-		TestParser::ViewNamespaceRecord(nsRecord);
-		Compiler compiler;
-		CompiledProgram program = compiler.Compile(nsRecord);
-		ByteCode code = program.EmitByteCode();
-		for (auto& b : code)
-		{
-			wcout << b << L"," << endl;
-		}
-	}
-	catch (SyntaxException& ex)
-	{
-		TestParser::ShowSyntaxError(ex);
-	}
-	catch (TypeException& ex)
-	{
-		TestTypeChecker::ShowTypeError(ex);
-	}
-	wcout << endl << endl;
+
+	CompileProgram({path}, "test_cases/max.txt");
 }
 void TestCompiler::TestFactorial()
 {
 	wcout << L"Test Function: " << __FUNCTION__ << endl;
 	string path = "test_cases/factorial.txt";
-	Lexer lexer(path);
-	try
-	{
-		Parser parser(path, lexer.tokens);
-		NamespaceRecord nsRecord;
-		CodeFile file = parser.Program();
-		nsRecord.AddFile(file);
-		TypeChecker checker(nsRecord);
-		TestParser::ViewNamespaceRecord(nsRecord);
-		Compiler compiler;
-		CompiledProgram program = compiler.Compile(nsRecord);
-		ByteCode code = program.EmitByteCode();
-		for (auto& b : code)
-		{
-			wcout << b << L"," << endl;
-		}
-	}
-	catch (SyntaxException& ex)
-	{
-		TestParser::ShowSyntaxError(ex);
-	}
-	catch (TypeException& ex)
-	{
-		TestTypeChecker::ShowTypeError(ex);
-	}
-	wcout << endl << endl;
+	CompileProgram({path}, "test_cases/factorial.bin");
 }
 void TestCompiler::TestFibonacci()
 {
 	wcout << L"Test Function: " << __FUNCTION__ << endl;
 	string path = "test_cases/fibonacci.txt";
-	Lexer lexer(path);
-	try
-	{
-		Parser parser(path, lexer.tokens);
-		NamespaceRecord nsRecord;
-		CodeFile file = parser.Program();
-		nsRecord.AddFile(file);
-		TypeChecker checker(nsRecord);
-		TestParser::ViewNamespaceRecord(nsRecord);
-		Compiler compiler;
-		CompiledProgram program = compiler.Compile(nsRecord);
-		ByteCode code = program.EmitByteCode();
-		for (auto& b : code)
-		{
-			wcout << b << L",";
-		}
-		wcout << endl;
-	}
-	catch (SyntaxException& ex)
-	{
-		TestParser::ShowSyntaxError(ex);
-	}
-	catch (TypeException& ex)
-	{
-		TestTypeChecker::ShowTypeError(ex);
-	}
-	wcout << endl << endl;
+	CompileProgram({path}, "test_cases/fibonacci.bin");
 }
 void TestCompiler::TestFactorialAndFibonacci()
 {
 	wcout << L"Test Function: " << __FUNCTION__ << endl;
 	vector<string> source = {"test_cases/FactorialAndFibonacci/fibonacci.txt",
 							 "test_cases/FactorialAndFibonacci/factorial.txt"};
+	CompileProgram(
+		source, "test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin");
+	wcout << L"byte code is written to "
+			 L"test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin"
+		  << endl;
+}
+void TestCompiler::CompileProgram(vector<std::__cxx11::string> source,
+								  string target)
+{
 	NamespaceRecord nsRecord;
 	for (string path : source)
 	{
@@ -421,16 +331,18 @@ void TestCompiler::TestFactorialAndFibonacci()
 		Compiler compiler;
 		CompiledProgram program = compiler.Compile(nsRecord);
 		ByteCode code = program.EmitByteCode();
-		WriteBytes(
-			"test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin",
-			code);
-		wcout << L"byte code is written to "
-				 L"test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin"
-			  << endl;
+		WriteBytes(target, code);
 	}
 	catch (TypeException& ex)
 	{
 		TestTypeChecker::ShowTypeError(ex);
 	}
 	wcout << endl << endl;
+}
+void TestCompiler::TestSummation()
+{
+	wcout << L"Test Function: " << __FUNCTION__ << endl;
+	string path = "test_cases/Summation/Summation.txt";
+
+	CompileProgram({path}, "test_cases/Summation/Summation.bin");
 }

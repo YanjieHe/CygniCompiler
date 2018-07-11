@@ -147,3 +147,8 @@ void TestFactorialAndFibonacci()
 		"test_cases/FactorialAndFibonacci/factorial_and_fibonacci.bin");
 	RunByteCode(code);
 }
+void TestSummation()
+{
+	ByteCode code = ReadBytes("test_cases/Summation/Summation.bin");
+	RunByteCode(code);
+}

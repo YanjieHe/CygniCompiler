@@ -46,5 +46,7 @@ void TestMax();
 void TestFactorial();
 void TestFibonacci();
 void TestFactorialAndFibonacci();
+void CompileProgram(vector<string> source, string target);
+void TestSummation();
 };	 // namespace TestCompiler
 #endif // TEST_HPP

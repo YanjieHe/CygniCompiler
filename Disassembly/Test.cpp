@@ -22,3 +22,10 @@ void TestFactorialAndFibonacci()
 	ByteCodeViewer viewer(code);
 	viewer.View();
 }
+void TestSummation()
+{
+	ByteCode code = ReadBytes("test_cases/Summation/Summation.bin");
+
+	ByteCodeViewer viewer(code);
+	viewer.View();
+}
