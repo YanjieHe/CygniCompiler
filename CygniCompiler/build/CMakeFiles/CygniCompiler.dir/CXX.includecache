@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/BitConverter.cpp
+BitConverter.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/BitConverter.hpp
+
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/BitConverter.hpp
+cstdint
+-
+string
+-
+vector
+-
+
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.cpp
 ByteCodeReader.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.hpp
@@ -25,6 +37,8 @@ vector
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.cpp
 Compiler.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Compiler.hpp
+BitConverter.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/BitConverter.hpp
 Exception.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.hpp
 Instruction.hpp
@@ -153,6 +167,8 @@ vector
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Scope.cpp
 Scope.hpp
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Scope.hpp
+Exception.hpp
+/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Exception.hpp
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/Scope.hpp
 Type.hpp
@@ -162,6 +178,8 @@ any
 string
 -
 unordered_map
+-
+vector
 -
 
 /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/SourceReader.cpp

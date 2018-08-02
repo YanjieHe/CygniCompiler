@@ -26,6 +26,7 @@ private:
 	void Move();
 	void Match(Tag tag);
 	wstring ParseIdentifier();
+	wstring ParseStringLiteral();
 	AccessModifier ParseAM(Token& token);
 	Module DefModule(AccessModifier modifier);
 	Class DefClass(AccessModifier modifier);
@@ -33,6 +34,7 @@ private:
 	Parameter ParseParameter();
 	LocalVariable DefLocalVariable();
 	Field DefField(AccessModifier modifier);
+	NativeFunction DefNativeFunction();
 
 	ExpPtr Block();
 	ExpPtr If();
@@ -88,6 +90,12 @@ inline wstring Parser::ParseIdentifier()
 {
 	Token& token = Look();
 	Match(Tag::Identifier);
+	return std::any_cast<wstring>(token.value);
+}
+inline wstring Parser::ParseStringLiteral()
+{
+	Token& token = Look();
+	Match(Tag::String);
 	return std::any_cast<wstring>(token.value);
 }
 #endif // PARSER_HPP

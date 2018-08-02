@@ -7,6 +7,7 @@ typedef vector<byte> ByteCode;
 class CompiledModule;
 class CompiledClass;
 class CompiledFunction;
+class CompiledNativeFunction;
 class CompiledProgram;
 class Compiler : Expression::Visitor
 {
@@ -20,6 +21,8 @@ public:
 	CompiledProgram Compile(NamespaceRecord& nsRecord);
 	void CompileNamespace(shared_ptr<Namespace>& nsPtr);
 	CompiledFunction CompileFunction(Function& function);
+	CompiledNativeFunction
+		CompileNativeFunction(NativeFunction& nativeFunction);
 
 	void Visit(ConstantExpression* node) override;
 	void Visit(UnaryExpression* node) override;
@@ -41,6 +44,7 @@ public:
 	int32_t index;
 	int32_t fieldCount;
 	vector<CompiledFunction> functions;
+	vector<CompiledNativeFunction> nativeFunctions;
 
 	CompiledModule();
 	CompiledModule(int32_t index, int32_t fieldCount,
@@ -79,6 +83,18 @@ public:
 					 ByteCode byteCode);
 	ByteCode EmitByteCode();
 };
+class CompiledNativeFunction
+{
+public:
+	wstring libraryPath;
+	wstring functionName;
+	int32_t index;
+	int32_t argsCount;
+	CompiledNativeFunction();
+	CompiledNativeFunction(wstring libraryPath, wstring functionName,
+						   int32_t index, int32_t argsCount);
+	ByteCode EmitByteCode();
+};
 class CompiledProgram
 {
 public:
@@ -93,11 +109,4 @@ public:
 	ByteCode EmitByteCode();
 };
 
-void ConvertValue(ByteCode& byteCode, byte* bytes, int32_t length);
-void ConvertUShort(ByteCode& byteCode, uint16_t value);
-void ConvertInt(ByteCode& byteCode, int32_t value);
-void ConvertLong(ByteCode& byteCode, int64_t value);
-void ConvertFloat(ByteCode& byteCode, float value);
-void ConvertDouble(ByteCode& byteCode, double value);
-void ConvertString(ByteCode& byteCode, wstring text);
 #endif // COMPILER_HPP

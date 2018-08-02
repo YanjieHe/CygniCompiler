@@ -1,4 +1,5 @@
 #include "Compiler.hpp"
+#include "BitConverter.hpp"
 #include "Exception.hpp"
 #include "Instruction.hpp"
 #include <iostream>
@@ -59,8 +60,8 @@ void Compiler::CompileNamespace(shared_ptr<Namespace>& nsPtr)
 }
 CompiledFunction Compiler::CompileFunction(Function& function)
 {
-	byteCode = ByteCode();
-	constantPool = ByteCode();
+	byteCode.clear();
+	constantPool.clear();
 	constantsCount = 0;
 	for (LocalVariable& variable : function.variables)
 	{
@@ -104,43 +105,56 @@ CompiledFunction Compiler::CompileFunction(Function& function)
 							localsCount, constantsCount, constantPool,
 							byteCode);
 }
+CompiledNativeFunction
+	Compiler::CompileNativeFunction(NativeFunction& nativeFunction)
+{
+	byteCode.clear();
+	constantPool.clear();
+	constantsCount = 0;
+
+	int32_t offset = nativeFunction.location.offset;
+	int32_t argsCount = nativeFunction.parameters.size();
+	return CompiledNativeFunction(nativeFunction.libraryPath,
+								  nativeFunction.functionName, offset,
+								  argsCount);
+}
 void Compiler::Visit(ConstantExpression* node)
 {
 	any value = node->value;
 	if (value.type() == typeid(int32_t))
 	{
 		constantPool.push_back(constant_int);
-		ConvertInt(constantPool, any_cast<int32_t>(value));
+		BitConverter::AppendInt(constantPool, any_cast<int32_t>(value));
 		byteCode.push_back(push_constant_int);
 	}
 	else if (value.type() == typeid(int64_t))
 	{
 		constantPool.push_back(constant_long);
-		ConvertLong(constantPool, any_cast<int64_t>(value));
+		BitConverter::AppendLong(constantPool, any_cast<int64_t>(value));
 		byteCode.push_back(push_constant_long);
 	}
 	else if (value.type() == typeid(float))
 	{
 		constantPool.push_back(constant_float);
-		ConvertFloat(constantPool, any_cast<float>(value));
+		BitConverter::AppendFloat(constantPool, any_cast<float>(value));
 		byteCode.push_back(push_constant_float);
 	}
 	else if (value.type() == typeid(double))
 	{
 		constantPool.push_back(constant_double);
-		ConvertDouble(constantPool, any_cast<double>(value));
+		BitConverter::AppendDouble(constantPool, any_cast<double>(value));
 		byteCode.push_back(push_constant_double);
 	}
 	else if (value.type() == typeid(wchar_t))
 	{
 		constantPool.push_back(constant_int);
-		ConvertInt(constantPool, any_cast<int32_t>(value));
+		BitConverter::AppendInt(constantPool, any_cast<wchar_t>(value));
 		byteCode.push_back(push_constant_int);
 	}
 	else if (value.type() == typeid(wstring))
 	{
 		constantPool.push_back(constant_string);
-		ConvertString(constantPool, any_cast<wstring>(value));
+		BitConverter::AppendString(constantPool, any_cast<wstring>(value));
 		byteCode.push_back(push_constant_string);
 	}
 	else
@@ -461,7 +475,7 @@ void Compiler::Visit(AssignExpression* node)
 		{
 			byteCode.push_back(pop_field_int);
 			constantPool.push_back(constant_int);
-			ConvertInt(constantPool, node->location.index);
+			BitConverter::AppendInt(constantPool, node->location.index);
 			byteCode.push_back(constantsCount);
 			constantsCount++;
 			byteCode.push_back(node->location.offset);
@@ -484,7 +498,7 @@ void Compiler::Visit(IfThenExpression* node)
 	node->condition->Accept(this);
 	byteCode.push_back(jump_if_false);
 	int32_t index = byteCode.size();
-	ConvertUShort(byteCode, 0);
+	BitConverter::AppendUShort(byteCode, 0);
 	node->ifTrue->Accept(this);
 	int32_t target = byteCode.size();
 	byteCode.at(index) = target % 256;
@@ -495,12 +509,12 @@ void Compiler::Visit(IfThenElseExpression* node)
 	node->condition->Accept(this);
 	byteCode.push_back(jump_if_false);
 	int32_t index1 = byteCode.size();
-	ConvertUShort(byteCode, 0);
+	BitConverter::AppendUShort(byteCode, 0);
 
 	node->ifTrue->Accept(this);
 	byteCode.push_back(jump);
 	int32_t index2 = byteCode.size();
-	ConvertUShort(byteCode, 0);
+	BitConverter::AppendUShort(byteCode, 0);
 
 	int32_t target1 = byteCode.size();
 	byteCode.at(index1) = target1 % 256;
@@ -554,7 +568,7 @@ void Compiler::Visit(VariableExpression* node)
 		{
 			byteCode.push_back(push_function);
 			constantPool.push_back(constant_int);
-			ConvertInt(constantPool, node->location.index);
+			BitConverter::AppendInt(constantPool, node->location.index);
 			byteCode.push_back(constantsCount);
 			constantsCount++;
 			byteCode.push_back(node->location.offset);
@@ -595,10 +609,10 @@ void Compiler::Visit(WhileExpression* node)
 	node->condition->Accept(this);
 	byteCode.push_back(jump_if_false);
 	int32_t index2 = byteCode.size();
-	ConvertUShort(byteCode, 0);
+	BitConverter::AppendUShort(byteCode, 0);
 	node->body->Accept(this);
 	byteCode.push_back(jump);
-	ConvertUShort(byteCode, index1);
+	BitConverter::AppendUShort(byteCode, index1);
 	int32_t target = byteCode.size();
 	byteCode.at(index2) = target % 256;
 	byteCode.at(index2 + 1) = target / 256;
@@ -613,7 +627,7 @@ void Compiler::Visit(DotExpression* node)
 			Function f = any_cast<Function>(node->value);
 			byteCode.push_back(push_function);
 			constantPool.push_back(constant_int);
-			ConvertInt(constantPool, f.location.index);
+			BitConverter::AppendInt(constantPool, f.location.index);
 			byteCode.push_back(constantsCount);
 			constantsCount++;
 			byteCode.push_back(f.location.offset);
@@ -641,7 +655,7 @@ CompiledModule::CompiledModule(int32_t index, int32_t fieldCount,
 ByteCode CompiledModule::EmitByteCode()
 {
 	ByteCode code;
-	ConvertInt(code, index);
+	BitConverter::AppendInt(code, index);
 	code.push_back(fieldCount);
 	code.push_back(functions.size());
 	for (auto& function : functions)
@@ -699,11 +713,11 @@ ByteCode CompiledFunction::EmitByteCode()
 {
 	ByteCode code;
 	code.push_back(index);
-	ConvertInt(code, stackSize);
+	BitConverter::AppendInt(code, stackSize);
 	code.push_back(argsCount);
 	code.push_back(localsCount);
 	code.push_back(constantCount);
-	ConvertUShort(code, byteCode.size());
+	BitConverter::AppendUShort(code, byteCode.size());
 	for (auto& b : constantPool)
 	{
 		code.push_back(b);
@@ -712,6 +726,26 @@ ByteCode CompiledFunction::EmitByteCode()
 	{
 		code.push_back(b);
 	}
+	return code;
+}
+CompiledNativeFunction::CompiledNativeFunction()
+{
+}
+CompiledNativeFunction::CompiledNativeFunction(wstring libraryPath,
+											   wstring functionName,
+											   int32_t index, int32_t argsCount)
+	: libraryPath{libraryPath}
+	, functionName{functionName}
+	, index{index}
+	, argsCount{argsCount}
+{
+}
+ByteCode CompiledNativeFunction::EmitByteCode()
+{
+	ByteCode code;
+	BitConverter::AppendInt(code, index);
+	BitConverter::AppendString(code, libraryPath);
+	BitConverter::AppendString(code, functionName);
 	return code;
 }
 CompiledProgram::CompiledProgram()
@@ -745,11 +779,12 @@ ByteCode CompiledProgram::EmitByteCode()
 {
 	SearchMainFunction();
 	ByteCode code;
-	ConvertInt(code, mainModule);
+	BitConverter::AppendInt(code, mainModule);
 	code.push_back(mainFunction);
+	BitConverter::AppendInt(code, modules.size());
+	BitConverter::AppendInt(code, classes.size());
 	for (auto& module : modules)
 	{
-		code.push_back(0);
 		for (auto b : module.EmitByteCode())
 		{
 			code.push_back(b);
@@ -757,48 +792,10 @@ ByteCode CompiledProgram::EmitByteCode()
 	}
 	for (auto& _class : classes)
 	{
-		code.push_back(1);
 		for (auto b : _class.EmitByteCode())
 		{
 			code.push_back(b);
 		}
 	}
 	return code;
-}
-void ConvertValue(ByteCode& byteCode, byte* bytes, int32_t length)
-{
-	for (int32_t i = 0; i < length; i++)
-	{
-		byteCode.push_back(bytes[i]);
-	}
-}
-void ConvertUShort(ByteCode& byteCode, uint16_t value)
-{
-	ConvertValue(byteCode, (byte*) &value, sizeof(uint16_t));
-}
-void ConvertInt(ByteCode& byteCode, int32_t value)
-{
-	ConvertValue(byteCode, (byte*) &value, sizeof(int32_t));
-}
-void ConvertLong(ByteCode& byteCode, int64_t value)
-{
-	ConvertValue(byteCode, (byte*) &value, sizeof(int64_t));
-}
-void ConvertFloat(ByteCode& byteCode, float value)
-{
-	ConvertValue(byteCode, (byte*) &value, sizeof(float));
-}
-void ConvertDouble(ByteCode& byteCode, double value)
-{
-	ConvertValue(byteCode, (byte*) &value, sizeof(double));
-}
-void ConvertString(ByteCode& byteCode, wstring text)
-{
-	int32_t length = text.size();
-	ConvertInt(byteCode, length);
-	for (int32_t i = 0; i < length; i++)
-	{
-		int32_t character = text[i];
-		ConvertInt(byteCode, character);
-	}
 }

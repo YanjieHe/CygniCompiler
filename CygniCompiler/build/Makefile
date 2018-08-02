@@ -123,6 +123,33 @@ CygniCompiler/fast:
 	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/build
 .PHONY : CygniCompiler/fast
 
+BitConverter.o: BitConverter.cpp.o
+
+.PHONY : BitConverter.o
+
+# target to build an object file
+BitConverter.cpp.o:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/BitConverter.cpp.o
+.PHONY : BitConverter.cpp.o
+
+BitConverter.i: BitConverter.cpp.i
+
+.PHONY : BitConverter.i
+
+# target to preprocess a source file
+BitConverter.cpp.i:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/BitConverter.cpp.i
+.PHONY : BitConverter.cpp.i
+
+BitConverter.s: BitConverter.cpp.s
+
+.PHONY : BitConverter.s
+
+# target to generate assembly for a file
+BitConverter.cpp.s:
+	$(MAKE) -f CMakeFiles/CygniCompiler.dir/build.make CMakeFiles/CygniCompiler.dir/BitConverter.cpp.s
+.PHONY : BitConverter.cpp.s
+
 ByteCodeReader.o: ByteCodeReader.cpp.o
 
 .PHONY : ByteCodeReader.o
@@ -591,6 +618,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CygniCompiler"
 	@echo "... edit_cache"
+	@echo "... BitConverter.o"
+	@echo "... BitConverter.i"
+	@echo "... BitConverter.s"
 	@echo "... ByteCodeReader.o"
 	@echo "... ByteCodeReader.i"
 	@echo "... ByteCodeReader.s"

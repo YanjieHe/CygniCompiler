@@ -4,19 +4,27 @@
 #include <any>
 #include <string>
 #include <unordered_map>
+#include <vector>
 using std::any;
 using std::unordered_map;
 using std::wstring;
 class Scope
 {
 public:
-	Scope* parent;
 	unordered_map<wstring, any> map;
+	Scope();
+	void Put(wstring name, any value);
+};
 
-	Scope(Scope* parent);
-
+class ScopeStack
+{
+public:
+	vector<Scope> scopes;
+	ScopeStack();
+	void Push(Scope scope);
+	void Pop();
+	any Find(wstring name);
 	bool Contains(wstring name);
-	any Get(wstring name);
-	bool Put(wstring name, any value);
+	Scope& Peek();
 };
 #endif // SCOPE_HPP

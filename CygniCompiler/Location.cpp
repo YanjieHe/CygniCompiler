@@ -13,3 +13,7 @@ bool Location::IsLocal()
 {
 	return index == -1;
 }
+Location Location::Local(int32_t offset)
+{
+	return Location(-1, offset);
+}

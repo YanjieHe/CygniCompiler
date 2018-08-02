@@ -67,7 +67,9 @@ enum class Tag
 	Internal,
 
 	Module,
-	Namespace
+	Namespace,
+	Uses,
+	Native,
 };
 
 class Token
@@ -101,7 +103,9 @@ static unordered_map<wstring, Tag> keywords = {{L"true", Tag::True},
 											   {L"protected", Tag::Protected},
 											   {L"internal", Tag::Internal},
 											   {L"module", Tag::Module},
-											   {L"namespace", Tag::Namespace}};
+											   {L"namespace", Tag::Namespace},
+											   {L"uses", Tag::Uses},
+											   {L"native", Tag::Native}};
 
 static unordered_map<wstring, Tag> operators = {
 	{L"+", Tag::Add},

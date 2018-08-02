@@ -44,5 +44,14 @@ class NotImplementedException : public Exception
 public:
 	NotImplementedException();
 };
-
+class UndefinedSymbolException : public Exception
+{
+public:
+	UndefinedSymbolException(wstring name);
+};
+class DuplicateKeyException : public Exception
+{
+public:
+	DuplicateKeyException(wstring key);
+};
 #endif // EXCEPTION_HPP

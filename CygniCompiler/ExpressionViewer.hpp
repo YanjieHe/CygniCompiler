@@ -14,15 +14,10 @@ public:
 	void Visit(BlockExpression* node) override;
 	void Visit(IfThenExpression* node) override;
 	void Visit(IfThenElseExpression* node) override;
-	// void Visit(DefVarExpression* node) override;
-	// void Visit(DefFunExpression* node) override;
-	// void Visit(ParameterExpression* node) override;
 	void Visit(CallExpression* node) override;
 	void Visit(VariableExpression* node) override;
 	void Visit(ReturnExpression* node) override;
 	void Visit(WhileExpression* node) override;
-	// void Visit(ModuleExpression* node) override;
-	// void Visit(ClassExpression* node) override;
 	void Visit(DotExpression* node) override;
 };
 #endif // EXPRESSION_VIEWER_HPP

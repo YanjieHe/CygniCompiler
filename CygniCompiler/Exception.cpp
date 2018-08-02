@@ -48,3 +48,11 @@ NotImplementedException::NotImplementedException()
 	: Exception(L"The method or operation is not implemented")
 {
 }
+UndefinedSymbolException::UndefinedSymbolException(wstring name)
+	: Exception(L"undefined symbol " + name)
+{
+}
+DuplicateKeyException::DuplicateKeyException(wstring key)
+	: Exception(L"duplicate key " + key)
+{
+}

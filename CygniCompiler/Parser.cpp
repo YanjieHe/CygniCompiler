@@ -117,29 +117,37 @@ Module Parser::DefModule(AccessModifier modifier)
 	Match(Tag::LeftBrace);
 	vector<Field> fields;
 	vector<Function> functions;
+	vector<NativeFunction> nativeFunctions;
 	while (Look().tag != Tag::RightBrace)
 	{
-		AccessModifier am = ParseAM(Look());
-		Move();
-		if (Look().tag == Tag::DefVar)
+		if (Look().tag == Tag::Native)
 		{
-			Field field = DefField(am);
-			fields.push_back(field);
-		}
-		else if (Look().tag == Tag::DefFun)
-		{
-			Function function = DefFunction(am);
-			functions.push_back(function);
+			nativeFunctions.push_back(DefNativeFunction());
 		}
 		else
 		{
-			throw SyntaxException(Look().line, Look().column,
-								  L"expecting 'var' or 'fun'");
+			AccessModifier am = ParseAM(Look());
+			Move();
+			if (Look().tag == Tag::DefVar)
+			{
+				Field field = DefField(am);
+				fields.push_back(field);
+			}
+			else if (Look().tag == Tag::DefFun)
+			{
+				Function function = DefFunction(am);
+				functions.push_back(function);
+			}
+			else
+			{
+				throw SyntaxException(Look().line, Look().column,
+									  L"expecting 'var' or 'fun'");
+			}
 		}
 	}
 	Match(Tag::RightBrace);
 	// TO DO: initializer
-	return Module(modifier, moduleType, fields, functions);
+	return Module(modifier, moduleType, fields, functions, nativeFunctions);
 }
 Class Parser::DefClass(AccessModifier modifier)
 {
@@ -236,6 +244,51 @@ Field Parser::DefField(AccessModifier modifier)
 	Match(Tag::Assign);
 	ExpPtr value = Or();
 	return Field(modifier, name, type, value);
+}
+NativeFunction Parser::DefNativeFunction()
+{
+	Match(Tag::Native);
+	Match(Tag::LeftParenthesis);
+	wstring libraryName = ParseStringLiteral();
+	Match(Tag::Comma);
+	wstring functionName = ParseStringLiteral();
+	Match(Tag::RightParenthesis);
+	AccessModifier modifier = ParseAM(Look());
+	Move();
+	Match(Tag::DefFun);
+	wstring name = ParseIdentifier();
+	Match(Tag::LeftParenthesis);
+	vector<Parameter> parameters;
+	if (Look().tag == Tag::RightParenthesis)
+	{
+		Match(Tag::RightParenthesis);
+	}
+	else
+	{
+		parameters.push_back(ParseParameter());
+		while (Look().tag != Tag::RightParenthesis)
+		{
+			Match(Tag::Comma);
+			parameters.push_back(ParseParameter());
+		}
+		Match(Tag::RightParenthesis);
+	}
+	Match(Tag::Colon);
+	Type returnType = ParseType();
+	Match(Tag::LeftBrace);
+	vector<LocalVariable> variables;
+	while (Look().tag == Tag::DefVar)
+	{
+		variables.push_back(DefLocalVariable());
+	}
+	vector<ExpPtr> expressions;
+	while (Look().tag != Tag::RightBrace)
+	{
+		expressions.push_back(Statement());
+	}
+	Match(Tag::RightBrace);
+	return NativeFunction(libraryName, functionName, L"", modifier, name,
+						  parameters, returnType);
 }
 ExpPtr Parser::Return()
 {

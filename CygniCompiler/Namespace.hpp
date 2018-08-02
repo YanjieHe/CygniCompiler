@@ -54,6 +54,24 @@ public:
 			 vector<Parameter> parameters, vector<LocalVariable> variables,
 			 vector<ExpPtr> expressions, Type returnType);
 };
+class NativeFunction
+{
+public:
+	wstring libraryPath;
+	wstring functionName;
+	wstring options;
+
+	AccessModifier modifier;
+	wstring name;
+	vector<Parameter> parameters;
+	Type returnType;
+	Type functionType;
+	Location location;
+	NativeFunction();
+	NativeFunction(wstring libraryPath, wstring functionName, wstring options,
+				   AccessModifier modifier, wstring name,
+				   vector<Parameter> parameters, Type returnType);
+};
 class Module
 {
 public:
@@ -61,13 +79,15 @@ public:
 	Type type;
 	vector<Field> fields;
 	vector<Function> functions;
+	vector<NativeFunction> nativeFunctions;
 	unordered_map<wstring, int32_t> fieldMap;
 	unordered_map<wstring, int32_t> functionMap;
+	unordered_map<wstring, int32_t> nativeFunctionMap;
 	int32_t index;
 	Function moduleInitializer;
 	Module();
 	Module(AccessModifier modifier, Type type, vector<Field> fields,
-		   vector<Function> functions);
+		   vector<Function> functions, vector<NativeFunction> nativeFunctions);
 };
 class Class
 {
@@ -96,7 +116,6 @@ public:
 	unordered_map<wstring, shared_ptr<Namespace>> uses;
 	Namespace();
 };
-
 class CodeFile
 {
 public:

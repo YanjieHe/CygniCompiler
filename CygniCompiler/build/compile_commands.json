@@ -1,6 +1,11 @@
 [
 {
   "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
+  "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/BitConverter.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/BitConverter.cpp",
+  "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/BitConverter.cpp"
+},
+{
+  "directory": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/build",
   "command": "/usr/bin/c++     -std=c++17 -Wall -Wextra  -O0 -Wall -g -ggdb   -o CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.o -c /home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.cpp",
   "file": "/home/jasonhe/Documents/MyCode/CPP/JuCi++/CygniCompiler/ByteCodeReader.cpp"
 },

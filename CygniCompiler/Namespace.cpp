@@ -53,15 +53,41 @@ Function::Function(AccessModifier modifier, wstring name,
 	types.push_back(returnType);
 	this->functionType = Type::Function(types);
 }
+NativeFunction::NativeFunction()
+{
+}
+NativeFunction::NativeFunction(wstring libraryPath, wstring functionName,
+							   wstring options, AccessModifier modifier,
+							   wstring name, vector<Parameter> parameters,
+							   Type returnType)
+	: libraryPath{libraryPath}
+	, functionName{functionName}
+	, options{options}
+	, modifier{modifier}
+	, name{name}
+	, parameters{parameters}
+	, returnType{returnType}
+{
+	vector<Type> types;
+	types.reserve(parameters.size() + 1);
+	for (int32_t i = 0, n = parameters.size(); i < n; i++)
+	{
+		types.push_back(parameters.at(i).type);
+	}
+	types.push_back(returnType);
+	this->functionType = Type::Function(types);
+}
 Module::Module()
 {
 }
 Module::Module(AccessModifier modifier, Type type, vector<Field> fields,
-			   vector<Function> functions)
+			   vector<Function> functions,
+			   vector<NativeFunction> nativeFunctions)
 	: modifier{modifier}
 	, type{type}
 	, fields{fields}
 	, functions{functions}
+	, nativeFunctions{nativeFunctions}
 {
 	for (int32_t i = 0, n = fields.size(); i < n; i++)
 	{
@@ -70,6 +96,10 @@ Module::Module(AccessModifier modifier, Type type, vector<Field> fields,
 	for (int32_t i = 0, n = functions.size(); i < n; i++)
 	{
 		functionMap.insert({functions[i].name, i});
+	}
+	for (int32_t i = 0, n = nativeFunctions.size(); i < n; i++)
+	{
+		nativeFunctionMap.insert({nativeFunctions[i].name, i});
 	}
 }
 Class::Class()

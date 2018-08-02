@@ -253,6 +253,10 @@ wstring TokenTagToString(Tag tag)
 		return L"module";
 	case Tag::Namespace:
 		return L"namespace";
+	case Tag::Uses:
+		return L"uses";
+	case Tag::Native:
+		return L"native";
 	default:
 		throw wstring(L"Error");
 	}

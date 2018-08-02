@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CygniCompiler.dir/BitConverter.cpp.o"
   "CMakeFiles/CygniCompiler.dir/ByteCodeReader.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Compiler.cpp.o"
   "CMakeFiles/CygniCompiler.dir/Exception.cpp.o"

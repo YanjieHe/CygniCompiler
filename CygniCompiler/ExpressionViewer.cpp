@@ -20,7 +20,7 @@ void ExpressionViewer::ViewNamespace(shared_ptr<Namespace> nsPtr)
 		}
 		for (auto& function : moduleInfo.functions)
 		{
-			wcout << L"(fun ";
+			wcout << L"(DefFun ";
 			wcout << function.name << L" ";
 			wcout << L"(";
 			for (auto& parameter : function.parameters)
@@ -31,7 +31,7 @@ void ExpressionViewer::ViewNamespace(shared_ptr<Namespace> nsPtr)
 			wcout << L")" << endl;
 			for (auto& variable : function.variables)
 			{
-				wcout << L"(var ";
+				wcout << L"(DefVar ";
 				wcout << variable.name << L" ";
 				variable.value->Accept(this);
 				wcout << L")";

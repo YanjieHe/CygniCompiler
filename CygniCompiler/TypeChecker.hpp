@@ -9,7 +9,7 @@ class TypeChecker : public Expression::Visitor
 public:
 	NamespaceRecord& nsRecord;
 	shared_ptr<Namespace> nsPtr;
-	Scope* scope;
+	ScopeStack scopeStack;
 	TypeChecker(NamespaceRecord& record);
 
 	void Check(shared_ptr<Namespace> nsPtr);

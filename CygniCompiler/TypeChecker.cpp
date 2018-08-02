@@ -8,8 +8,7 @@ using std::wcout;
 TypeChecker::TypeChecker(NamespaceRecord& nsRecord)
 	: nsRecord{nsRecord}
 {
-	Scope globalScope(nullptr);
-	scope = &globalScope;
+	scopeStack.Push(Scope());
 	int32_t moduleCount = 0;
 	int32_t classCount = 0;
 	for (auto& pair : nsRecord.record)
@@ -25,9 +24,7 @@ TypeChecker::TypeChecker(NamespaceRecord& nsRecord)
 }
 void TypeChecker::Check(shared_ptr<Namespace> nsPtr)
 {
-	Scope nextScope(scope);
-	Scope* parent = scope;
-	scope = &nextScope;
+	scopeStack.Push(Scope());
 	for (auto& pair : nsPtr->modules)
 	{
 		Module& moduleInfo = pair.second;
@@ -38,13 +35,11 @@ void TypeChecker::Check(shared_ptr<Namespace> nsPtr)
 		Class& classInfo = pair.second;
 		CheckClass(classInfo);
 	}
-	scope = parent;
+	scopeStack.Pop();
 }
 void TypeChecker::CheckModule(Module& moduleInfo)
 {
-	Scope nextScope(scope);
-	Scope* parent = scope;
-	scope = &nextScope;
+	scopeStack.Push(Scope());
 	for (auto& field : moduleInfo.fields)
 	{
 		CheckField(field);
@@ -53,13 +48,11 @@ void TypeChecker::CheckModule(Module& moduleInfo)
 	{
 		CheckFunction(function);
 	}
-	scope = parent;
+	scopeStack.Pop();
 }
 void TypeChecker::CheckClass(Class& classInfo)
 {
-	Scope nextScope(scope);
-	Scope* parent = scope;
-	scope = &nextScope;
+	scopeStack.Push(Scope());
 	for (auto& field : classInfo.fields)
 	{
 		CheckField(field);
@@ -68,7 +61,7 @@ void TypeChecker::CheckClass(Class& classInfo)
 	{
 		CheckFunction(function);
 	}
-	scope = parent;
+	scopeStack.Pop();
 }
 void TypeChecker::CheckField(Field& field)
 {
@@ -83,16 +76,14 @@ void TypeChecker::CheckField(Field& field)
 }
 void TypeChecker::CheckFunction(Function& function)
 {
-	Scope nextScope(scope);
-	Scope* parent = scope;
-	scope = &nextScope;
+	scopeStack.Push(Scope());
 	for (Parameter& p : function.parameters)
 	{
-		scope->Put(p.name, p);
+		scopeStack.Peek().Put(p.name, p);
 	}
 	for (LocalVariable& v : function.variables)
 	{
-		scope->Put(v.name, v);
+		scopeStack.Peek().Put(v.name, v);
 	}
 	for (LocalVariable& v : function.variables)
 	{
@@ -102,7 +93,7 @@ void TypeChecker::CheckFunction(Function& function)
 	{
 		e->Accept(this);
 	}
-	scope = parent;
+	scopeStack.Pop();
 }
 void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t& moduleCount,
 						  int32_t& classCount)
@@ -118,26 +109,26 @@ void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t& moduleCount,
 		{
 			field.location = Location(moduleInfo.index, fieldOffset);
 			fieldOffset++;
-			scope->Put(field.name, field);
+			scopeStack.Peek().Put(field.name, field);
 		}
 		for (Function& function : moduleInfo.functions)
 		{
 			function.location = Location(moduleInfo.index, functionOffset);
 			functionOffset++;
-			scope->Put(function.name, function);
+			scopeStack.Peek().Put(function.name, function);
 			int32_t offset = 0;
 			for (Parameter& p : function.parameters)
 			{
-				p.location = Location(-1, offset);
+				p.location = Location::Local(offset);
 				offset++;
 			}
 			for (LocalVariable& v : function.variables)
 			{
-				v.location = Location(-1, offset);
+				v.location = Location::Local(offset);
 				offset++;
 			}
 		}
-		scope->Put(moduleInfo.type.name, moduleInfo);
+		scopeStack.Peek().Put(moduleInfo.type.name, moduleInfo);
 	}
 	for (auto& pair : nsPtr->classes)
 	{
@@ -150,26 +141,26 @@ void TypeChecker::Collect(shared_ptr<Namespace> nsPtr, int32_t& moduleCount,
 		{
 			field.location = Location(classInfo.index, fieldOffset);
 			fieldOffset++;
-			scope->Put(field.name, field);
+			scopeStack.Peek().Put(field.name, field);
 		}
 		for (Function& function : classInfo.functions)
 		{
 			function.location = Location(classInfo.index, functionOffset);
 			functionOffset++;
-			scope->Put(function.name, function);
+			scopeStack.Peek().Put(function.name, function);
 			int32_t offset = 0;
 			for (Parameter& p : function.parameters)
 			{
-				p.location = Location(-1, offset);
+				p.location = Location::Local(offset);
 				offset++;
 			}
 			for (LocalVariable& v : function.variables)
 			{
-				v.location = Location(-1, offset);
+				v.location = Location::Local(offset);
 				offset++;
 			}
 		}
-		scope->Put(classInfo.type.name, classInfo);
+		scopeStack.Peek().Put(classInfo.type.name, classInfo);
 	}
 }
 void TypeChecker::Visit(ConstantExpression* node)
@@ -410,9 +401,9 @@ void TypeChecker::Visit(BinaryExpression* node)
 void TypeChecker::Visit(AssignExpression* node)
 {
 	node->value->Accept(this);
-	if (scope->Contains(node->name))
+	if (scopeStack.Contains(node->name))
 	{
-		any value = scope->Get(node->name);
+		any value = scopeStack.Find(node->name);
 		if (value.type() == typeid(LocalVariable))
 		{
 			LocalVariable variable = any_cast<LocalVariable>(value);
@@ -534,9 +525,9 @@ void TypeChecker::Visit(CallExpression* node)
 }
 void TypeChecker::Visit(VariableExpression* node)
 {
-	if (scope->Contains(node->name))
+	if (scopeStack.Contains(node->name))
 	{
-		any value = scope->Get(node->name);
+		any value = scopeStack.Find(node->name);
 		if (value.type() == typeid(LocalVariable))
 		{
 			LocalVariable variable = any_cast<LocalVariable>(value);
@@ -605,7 +596,7 @@ void TypeChecker::Visit(DotExpression* node)
 	Type& objType = node->object->type;
 	if (objType.IsModule())
 	{
-		Module moduleInfo = any_cast<Module>(scope->Get(objType.name));
+		Module moduleInfo = any_cast<Module>(scopeStack.Find(objType.name));
 		if (moduleInfo.fieldMap.find(node->name) != moduleInfo.fieldMap.end())
 		{
 			Field field = moduleInfo.fields[moduleInfo.fieldMap[node->name]];
@@ -627,7 +618,7 @@ void TypeChecker::Visit(DotExpression* node)
 	}
 	else if (objType.IsClass())
 	{
-		Class classInfo = any_cast<Class>(scope->Get(objType.name));
+		Class classInfo = any_cast<Class>(scopeStack.Find(objType.name));
 		if (classInfo.fieldMap.find(node->name) != classInfo.fieldMap.end())
 		{
 			Field field = classInfo.fields[classInfo.fieldMap[node->name]];
